@@ -1,0 +1,164 @@
+<main id="main" class="main">
+    <div class="row">
+        <div style="display: flex;">
+
+            <div class="card col-4" style="width: 18rem;">
+
+                <div class="card-body">
+                    <h5 class="card-title">User details</h5>
+                    <p class="card-text"><strong>Name</strong>&nbsp;:&nbsp;{{address.Address.fullName}}</p>
+                    <p class="card-text"><strong>Email</strong>&nbsp;:&nbsp;{{address.Address.email}}</p>
+                    <p class="card-text"><strong>Phone</strong>&nbsp;:&nbsp;{{address.Address.phone}}</p>
+
+                </div>
+
+            </div>
+
+            <div class="card col-4 ml-5" style="width: 18rem;">
+
+                <div class="card-body">
+                    <h5 class="card-title">Address Details</h5>
+                    <p class="card-text"><strong>House Name</strong>&nbsp;:&nbsp;{{address.Address.address}}</p>
+                    <p class="card-text"><strong>Town</strong>&nbsp;:&nbsp;{{address.Address.town}}</p>
+                    <p class="card-text"><strong>State</strong>&nbsp;:&nbsp;{{address.Address.state}}</p>
+                    <p class="card-text"><strong>Post Code</strong>&nbsp;:&nbsp;{{address.Address.postcode}}</p>
+                </div>
+
+
+
+            </div>
+
+
+
+           
+
+            <div class="card col-4 ml-5" style="width: 18rem;">
+             
+                <div class="card-body">
+                    <h5 class="card-title">other Details</h5>
+                    <p class="card-text"><strong>paymentMethod</strong>&nbsp;:&nbsp;{{address.paymentMethod}}</p>
+                    <p class="card-text"><strong>Order Status</strong>&nbsp;:&nbsp;
+                        
+                        <span style="color: gray;font-weight: 600;" >{{details.[0].orderDetails.AdminStatus}}</span>
+                        
+                    
+                    <p class="card-text"><strong>Date</strong>&nbsp;:&nbsp;{{address.date}}</p>
+                </div>
+            </div>
+        </div>
+
+          
+        <table class="table col-12">
+            <thead>
+                <th><strong>Product</strong></th>
+                <th><strong>Name</strong></th>
+                <th><strong>quantity</strong></th>
+                <th><strong>Total Price</strong></th>
+                {{!-- <th><strong>Status</strong></th> --}}
+
+            </thead>
+            {{#each details}}
+            {{#if this.orderDetails.couponDetails}}
+               <div class="card col-4 ml-5" style="width: 18rem;">
+             
+                 <div class="card-body">
+                    <h5 class="card-title">Coupon Details</h5>
+                    <p class="card-text">
+                    <strong>Coupon Code</strong>
+                    <span style="color: gray;font-weight: 600;">&nbsp;:&nbsp;{{this.orderDetails.couponDetails.couponCode}}</span></p>
+                     <p class="card-text"><strong>Coupon Percentage</strong>&nbsp;:&nbsp;   
+                    <span style="color: gray;font-weight: 600;" >{{this.orderDetails.couponDetails.couponPercentage}}&nbsp;%</span>
+                    <p class="card-text"><strong>orginalAmount</strong>
+                    <span style="color: gray;font-weight: 600;" >{{this.orderDetails.couponDetails.orginalAmt}}</span>
+                    </p> 
+                    
+                </div> 
+            </div> 
+            {{/if}} 
+             <tbody>
+                 {{#each this.productList}}
+                <tr>
+                    
+                    <td data-label="S.No" class="col-3"><img src="/images/product/{{this.product.img.[0]}}" alt=""
+                            style="width: 70px;height: 70px;"></td>
+                    <td data-label="Name">{{this.product.name}}</td>
+
+                    <td data-label="Marks%">{{this.quantity}}</td>
+                    <td data-label="Marks%">{{this.total}}</td>
+                   
+                   
+                    {{!-- <td data-label="Marks%"> {{./details.[0].orderDetails.AdminStatus}} </td> --}}
+                   
+                    
+                    
+                    </tr>
+                    {{/each}}
+
+                 
+
+                   
+            </tbody>
+               
+            </table>
+
+        <!-- Button trigger modal -->
+        <!-- Button trigger modal -->
+          
+         
+         {{#AdminlogicalOr this.orderDetails.AdminStatus }}
+        <button type="button" class="btn btn-success mr-5 disabled" data-toggle="modal" data-target="#exampleModalCenter"
+            style="width: max-content; float:right;"> change status</button>
+        {{else}}
+        <button type="button" class="btn btn-success mr-5 " data-toggle="modal" data-target="#exampleModalCenter"
+            style="width: max-content; float:right; "> change status</button>
+            
+           
+           
+            {{/AdminlogicalOr}}    
+        {{/each}}
+        <!-- Modal -->
+
+        {{#each details}}
+
+
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <select name="" id="changestatus" style="width:100%;height: 30px;">
+                            
+                            {{#ifEquals this.orderDetails.AdminStatus 'Return confirmed'}} 
+                            
+                            <option>Return confirmed</option>
+                            <option >Refund</option>
+                             
+                            {{else}}
+                               
+                             <option>order confirmed</option>
+                            <option>Shipped</option>
+                            <option>Delivered</option>
+                             
+                            {{/ifEquals}}
+
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button class="btn btn-primary" onclick="changeStatus('{{this._id}}')">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+{{/each}}
+
+
+    </div>
+
+</main>

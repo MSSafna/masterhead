@@ -1,0 +1,27 @@
+<section>
+    <div class="container mt-5">
+    
+        <div class="col-md-6 ">
+            <h2>Edit user</h2>
+            <form action="/admin/edit-user/{{response._id}}" method="post" id="something">
+                <label for="">name</label>
+                <input type="text" name="name" class="form-control" id="name" value="{{response.name}}">
+
+
+
+                <label for="">email</label>
+                <input type="email" name="email" class="form-control"  value="{{response.email}}">
+
+                <label for="">number</label>
+                <input type="tel" name="number" class="form-control"   value="{{response.number}}">
+
+                
+
+
+                <button type="submit" class="btn btn-success mt-4">Submit</button>
+                <input type="button" value="Back" onclick="history.go(-2)" class="btn btn-primary "
+                    style="margin-top: 25px;margin-left: 10px;">
+            </form>
+        </div>
+    </div>
+    </section>

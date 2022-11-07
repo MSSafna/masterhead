@@ -1,0 +1,91 @@
+<style>
+    testimonial{
+    margin:110px auto 100px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(350px, 1fr));
+    grid-gap:20px;
+  }
+  .testimonial .card{
+    position:relative;
+    margin:0 auto;
+    width:350px;
+    background:rgba(247, 243, 243, 0);
+    padding:20px;
+    box-sizing:border-box;
+    text-align:center;
+    box-shadow:0 10px 40px rgba(0,0,0,.5);
+    overflow:hidden;
+  }
+  .testimonial .card .layer{
+    position:absolute;
+    top:calc(100% - 2px);
+    left:0;
+    height:100%;
+    width:100%;
+    background:linear-gradient(rgb(239, 124, 124) , #fea7a7);
+    z-index:1;
+    transition:0.5s;
+  }
+  .testimonial .card:hover .layer{
+    top:0;
+  }
+  .testimonial .card .content{
+    position:relative;
+    z-index:2;
+  }
+  .testimonial .card .content p{
+    font-size:14px;
+    line-height:13px;
+  }
+  
+
+  .testimonial .card:hover .content .details span{
+    color:#fff;
+  }
+</style>
+
+
+<section class="project-section">
+   
+   
+   
+    <div class="container mt-2 text-center">
+		 <div ><h5> Address You Booked</h5>	</div>
+  <div class="testimonial">
+  
+  
+	
+ <div class="row " >
+  {{#each response}}
+     <div class="col-12 col-md-4">
+    <div class="card " id="add{{this._id.Address.Housename}}phn{{this._id.CustomerPhone}}name{{this._id.CustomerName}}" style="display: block;">
+      <div class="layer"></div>
+      <div class="content mt-3 ">
+
+
+        <p><strong>{{this.fullName}} </strong></p><br> 
+	    <p><strong>{{this.address}}</strong></p><br>
+        <p><strong>{{this.town}}</strong></p><br>
+        <p><strong>{{this.state}}</strong></p><br>
+        <p><strong>{{this.postcode}}</strong></p><br>
+        <p><strong>{{this.phone}}</strong></p><br>
+        <p><strong>{{this.email}}</strong></p><br><br><br>
+
+  {{!-- <button class="btn btn-primary change" type="button" onclick="EditAddress('{{this._id.Address.Housename}}','{{this._id.Address.LandMark}}','{{this._id.CustomerPhone}}','{{this._id.CustomerName}}')"><span>Edit</span></button><br><br> --}}
+
+
+<a href="/deleteAddress/{{this._id}}" class="btn btn-primary change" type="button" onclick="return confirm('do you want to delete')" ><span>Delete</span></a>
+       
+     </div>
+    </div> 
+   </div>
+	{{/each}}
+    </div>
+  </div>
+ </div>
+
+
+
+    
+</section>
+

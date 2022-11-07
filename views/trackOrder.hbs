@@ -1,0 +1,186 @@
+<!-- Font Awesome -->
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  rel="stylesheet"
+/>
+<!-- Google Fonts -->
+<link
+  href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+  rel="stylesheet"
+/>
+<!-- MDB -->
+{{!-- <link
+  href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.css"
+  rel="stylesheet"
+/> --}}
+
+<style>
+
+    .track-line {
+height: 2px !important;
+background-color: #488978;
+opacity: 1;
+}
+
+    .track-line2 {
+height: 2px !important;
+background-color:#488978;
+opacity:0.2 ;
+}
+
+.dot {
+height: 10px;
+width: 10px;
+margin-left: 3px;
+margin-right: 3px;
+margin-top: 0px;
+background-color: #488978;
+border-radius: 50%;
+display: inline-block
+}
+
+.dot2 {
+height: 10px;
+width: 10px;
+margin-left: 3px;
+margin-right: 3px;
+margin-top: 0px;
+background-color: #488978;
+border-radius: 50%;
+display: inline-block;
+opacity:0.2
+}
+.big-dot {
+height: 25px;
+width: 25px;
+margin-left: 0px;
+margin-right: 0px;
+margin-top: 0px;
+background-color: #488978;
+border-radius: 50%;
+display: inline-block;
+}
+
+.big-dot i {
+font-size: 12px;
+}
+
+.card-stepper {
+z-index: 0
+}
+</style>
+
+
+<section class="vh-90" >
+  <div class="container py-5 h-100 ">
+    <div class="row d-flex justify-content-center align-items-center h-100" >
+      <div class="col ">
+        <div class="card card-stepper" style="border-radius: 10px;margin-top: 30px;background-color:#eee ;">
+          <div class="card-body p-4" >
+
+            <div class="d-flex justify-content-between align-items-center ">
+              <div class="d-flex flex-column">
+                 {{#deliveredTrackOrder orderDetails.AdminStatus}}
+                <span class="lead fw-normal" style="font-size:20px ;">Your order has been delivered</span>
+               
+                {{else}}
+                 <span class="lead fw-normal" style="font-size:20px ;">Your order has yet to be deliver</span>
+                 <span style="margin-top:-10px;">Order Date :&nbsp;{{../orderDetails.date}}</span>
+                  <span style="margin-top:-5px;">Expected to be deliver on :&nbsp;{{#deliveryDate ../orderDetails.date}}</span>
+                  {{/deliveryDate}}
+                 {{/deliveredTrackOrder}}
+                
+              </div>
+              
+            </div>
+            <hr class="my-4">
+
+                  <div class="d-flex flex-row justify-content-between align-items-center align-content-center">
+              <span class="dot"></span>
+
+              {{#orderConfirmedtrackOrder orderDetails.AdminStatus}}
+              <hr class="flex-fill track-line"><span class="dot"></span> 
+              {{else}}
+               <hr class="flex-fill track-line2"><span class="dot2 "></span>
+              {{/orderConfirmedtrackOrder}}
+
+                {{#shippedTrackOrder orderDetails.AdminStatus}}
+                 <hr class="flex-fill track-line"><span class="dot"></span>
+                  
+                 {{else}}
+                 <hr class="flex-fill track-line2"><span class="dot2 "></span>
+                 {{/shippedTrackOrder}}
+
+                 
+
+                  {{#deliveredTrackOrder orderDetails.AdminStatus}}
+                   
+              <hr class="flex-fill track-line"><span class="dot"></span>
+              <hr class="flex-fill track-line"><span
+                class="d-flex justify-content-center align-items-center big-dot dot">
+                <i class="fa fa-check text-white"></i></span>
+                 {{else}}
+                  <hr class="flex-fill track-line2"><span class="dot2"></span>
+              <hr class="flex-fill track-line2"><span
+                class="d-flex justify-content-center align-items-center big-dot dot2">
+                <i class="fa fa-check text-white"></i></span>
+                {{/deliveredTrackOrder}}
+            </div>
+           
+
+
+
+
+
+
+            <div class="d-flex flex-row justify-content-between align-items-center">
+              <div class="d-flex flex-column align-items-start" style="font-size:15px"><span>{{orderDetails.date}}</span><span>Order placed</span>
+              </div>
+           
+              
+
+
+               {{#orderConfirmedtrackOrder orderDetails.AdminStatus}}
+              <div class="d-flex flex-column justify-content-center" style="font-size:15px"><span>Order
+                  confirmed</span></div>
+                  {{else}}
+                  <div class="d-flex flex-column justify-content-center disable" style="font-size:15px"><span style="color: rgb(199, 196, 196);">Order
+                  confirmed</span></div>
+                  {{/orderConfirmedtrackOrder}} 
+
+
+                   {{#shippedTrackOrder orderDetails.AdminStatus}}
+                   
+                   <div class="d-flex flex-column align-items-center" style="font-size:15px"><span>Out for
+                  delivery</span></div>
+              <div class="d-flex flex-column justify-content-center align-items-center" style="font-size:15px">
+                  <span>Shipped</span></div>
+                  {{else}}
+                  <div class="d-flex flex-column align-items-center" style="font-size:15px"><span style="color: rgb(199, 196, 196);">Out for
+                  delivery</span></div>
+                  <div class="d-flex flex-column justify-content-center align-items-center ;" style="font-size:15px;color: rgb(199, 196, 196)">
+                 <span style="color: rgb(199, 196, 196);">Shipped</span></div>
+                  {{/shippedTrackOrder}}
+
+                  {{#deliveredTrackOrder orderDetails.AdminStatus}}
+              
+              <div class="d-flex flex-column align-items-end" style="font-size:15px"><span>Delivered</span></div>
+            </div>
+            {{else}}
+             <div class="d-flex flex-column align-items-end" style="font-size:15px"><span style="color: rgb(199, 196, 196);">Delivered</span></div>
+            </div>
+            {{/deliveredTrackOrder}}
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</section>
+
+<!-- MDB -->
+<script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.js"
+></script>

@@ -1,0 +1,177 @@
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML to PDF</title>
+<style>
+    .elem {
+        background-color: rgb(255, 255, 255);
+        color: rgb(0, 0, 0);
+    }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+
+<body>
+<div class="elem">
+ 
+    <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 padding">
+        <div class="card">
+        <div class="card-header p-4">
+        <a class="pt-2 d-inline-block"  data-abc="true">Master HEad</a>
+ <h3 class=" text-center">Invoice</h3>
+        
+       
+       <strong>OrderId : <span>{{order.[0].orderDetails._id}}</span></strong>
+        <div class="card-body ">
+           <div class="row mb-4">
+              <div class="col-sm-8 ">
+
+              <h5 class="mb-1">Delivery Details:</h5>
+                        {{!-- <h4 class="text-dark mb-1">Mobile Mart</h4> --}}
+                        <strong>Name : {{order.[0].orderDetails.Address.fullName}}<br></strong> 
+                        <strong>Address : {{order.[0].orderDetails.Address.address}}</strong><br>
+                        <strong>Pin : {{order.[0].orderDetails.Address.postcode}}</strong><br>
+                        <strong>Mobile : {{order.[0].orderDetails.Address.phone}}</strong>
+
+
+                      
+               </div>
+        
+
+
+                  <div class="col-sm-4 float-right">
+
+                      
+                         <h5 class="mb-1">Order Details:</h5>
+                        {{!-- <h4 class="text-dark mb-1">Mobile Mart</h4> --}}
+                        <strong>Date: {{order.[0].orderDetails.date}}</strong><br>
+                        <strong>Payment: {{order.[0].orderDetails.paymentMethod}}</strong><br>
+                        <strong>Amount to Pay: ₹ {{order.[0].orderDetails.total}}</strong><br>
+               </div>
+
+               </div>
+
+        
+                   
+        </div>
+        {{#each order}}
+       
+        <div class="table-responsive-sm">
+
+         
+
+        <table class="table table-striped">
+        <thead>
+        <tr>
+        <th class="center">#</th>
+        <th>Item</th>
+       <th class="right">Image</th>
+        <th class="right">Price</th>
+        <th class="center">Qty</th>
+        {{!-- <th class="right">Total</th> --}}
+
+
+        </tr>
+
+        </thead>
+       {{#each this.productList}}
+        <tbody>
+
+
+        <tr>
+        <td class="center"></td>
+        
+        <td class="left strong">{{this.prodetails.name}}</td>
+        <td class="left strong"><img style="height: 30px;width: 30px;" src="/images/product/{{this.prodetails.img.[0]}}"></td>
+        <td class="right">₹ {{this.prodetails.price}}</td>
+        <td class="center">{{this.proQty}}</td>
+         {{!-- <td class="right">$15,000</td> --}}
+        </tr>
+      
+        </tbody>
+         {{/each}}
+        </table>
+
+           {{/each}}
+
+        </div>
+        
+        <div class="card-footer bg-white">
+        <p class="mb-0">Master HEad.com</p>
+        </div>
+        </div>
+        </div>
+
+</div>
+
+<div>
+
+  
+<div class="text-center">
+<button class="download btn btn-primary ">Download PDF</button>
+</div>
+
+</div>
+<script>
+    let div = document.querySelector(".elem");
+    let btn = document.querySelector(".download");
+    btn.addEventListener('click', () => {
+        html2pdf().from(div).save()
+    })
+
+
+
+
+    var table = document.getElementsByTagName('table')[0],
+        rows = table.getElementsByTagName('tr'),
+        text = 'textContent' in document ? 'textContent' : 'innerText';
+
+    for (var i = 1, len = rows.length; i < len; i++) {
+        rows[i].children[0][text] = i;
+    }
+</script>
+
+
+<style>
+    body{
+
+background-color: #000;
+}
+
+.padding{
+
+padding: 2rem !important;
+} 
+
+.card {
+  margin-bottom: 30px;
+  border: none;
+  -webkit-box-shadow: 0px 1px 2px 1px rgba(154, 154, 204, 0.22);
+  -moz-box-shadow: 0px 1px 2px 1px rgba(154, 154, 204, 0.22);
+  box-shadow: 0px 1px 2px 1px rgba(154, 154, 204, 0.22);
+}
+
+.card-header {
+  background-color: #fff;
+  border-bottom: 1px solid #e6e6f2;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+h5 {
+  font-size: 15px;
+  line-height: 26px;
+  color: #3d405c;
+  margin: 0px 0px 15px 0px;
+  font-family: 'Circular Std Medium';
+}
+
+.text-dark {
+  color: #3d405c !important;
+}
+</style>
+</body>
+
+
+</html>

@@ -1,0 +1,49 @@
+<style>
+  tr:hover {
+    background-color: beige;
+
+  }
+</style>
+
+<div class="container">
+  <table class="table">
+    <thead>
+      <th><strong>Product</strong></th>
+      <th><strong>Total price</strong></th>
+
+      <th><strong>quantity</strong></th>
+      <th><strong>Status</strong></th>
+      <th>1</th>
+
+    </thead>
+    <tbody>
+      {{#each viewProduct}}
+      <tr>
+
+        <td data-label="S.No" class="col-3"><img src="/images/product/{{this.product.img.[0]}}" alt=""
+            style="width: 70px;height: 70px;"></td>
+
+        <td data-label="Name">{{this.total}}</td>
+
+        <td data-label="Marks%">{{this.quantity}}</td>
+
+        {{#if cancelDisplay}}
+        <td data-label="Staus" style="color: green;">{{this.status}}</td>
+        {{else}}
+        <td data-label="Staus" style="color: red;">{{this.status}}</td>
+        {{/if}}
+
+        <td>
+          {{#if displayReturn}}
+          <a href="/returnProduct/{{this._id}}" class="btn btn-primary"
+            onclick="return confirm('want to return')">return product</a>
+          {{/if}}
+        </td>
+      
+        {{/each}}
+
+    </tbody>
+    
+  </table>
+ 
+</div>

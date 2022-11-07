@@ -1,0 +1,60 @@
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+<main id="main" class="main">
+  <section>
+    <div class="container   align-content:">
+     
+      <table class="table  mt-4 center">
+         
+        {{!-- <a href="/admin/adduser" class="btn btn-success ml-auto mt-4 text-right">Add user</a> --}}
+
+        <thead>
+          <tr>
+             <th>no</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Number</th>
+            <th scope="col">Status</th>
+            <th scope="col">Options</th>
+           
+
+
+          </tr>
+        </thead>
+        <tbody>
+
+          {{#each users}}
+          <tr>
+            
+            <td>{{#indexing @index}}{{/indexing}}</td>
+            <td class="col-2">{{this.name}}</td>
+             <td class="col-4">{{this.email}}</td>
+            <td>{{this.number}}</td>
+           
+            <td>
+              {{#if this.status}}
+             <p style="color: green;"> {{this.loginStatus}}</p>
+             {{else}}
+             <p style="color: red;"> {{this.loginStatus}}</p>
+             {{/if}}
+            {{!-- <a href="/admin/edit-user/{{this._id}}" class="btn btn-primary" >edit</a>  --}}
+           </td>
+            <td>
+              {{#if status}}
+             <a href="/admin/blockuser/{{this._id}}"  class="btn btn-danger">block</a>
+             {{else}}
+              <a href="/admin/unblockuser/{{this._id}}"  class="btn btn-success">unblock</a>
+              {{/if}}
+            
+            </td>
+             
+           
+          </tr>
+          {{/each}}
+        </tbody>
+       
+      </table>
+    </div>
+  </section>
+</main>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>

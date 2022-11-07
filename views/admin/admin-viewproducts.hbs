@@ -1,0 +1,177 @@
+<main id="main" class="main">
+  <section>
+    <div class="container   align-content:">
+      <table class="table  mt-4 center" id="myTable">
+
+        <a href="/admin/addproduct" class="btn btn-success ml-auto mt-4 text-right">Add products</a>
+
+        <thead>
+          <tr>
+             <th scope="col">SI.No</th>
+            <th scope="col">image</th>
+            <th scope="col">name</th>
+            <th scope="col">brand</th>
+            
+            <th scope="col">price</th>
+            <th scope="col">offer</th>
+            <th scope="col">stock</th>
+            {{!-- <th scope="col">stockupdate</th> --}}
+          
+            <th scope="col">options</th>
+            <th scope="col">delete</th>
+              <th scope="col">More</th>
+
+
+          </tr>
+        </thead>
+        <tbody>
+
+        {{#each products}}
+          <tr>
+            <td>{{#indexing @index}}{{/indexing}}</td>
+            <td><img src="/images/product/{{this.image}}" alt="" style="width: 70px;height: 70px;"></td>
+            <td class="col-2">{{this.name}}</td>
+            <td class="col-2">{{this.brand.brand}}</td>
+            {{#if this.brand.offerDisplay}}
+           
+            <td class="col-1">{{this.originalPrice}}</td>
+            {{else}}
+            <td class="col-1">{{this.price}}</td>
+            {{/if}}
+           {{#if this.brand.offerDisplay}}
+            <td class="col-1">{{this.brand.offerPercentage}} %</td>
+            {{else}}
+               <td class="col-1">No offer</td>
+            {{/if}}
+            <td class="col-1">{{this.stock}}</td>
+
+            {{!-- <td class="col-1">
+              <!-- Button trigger modal -->
+            
+              <button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#stockUpdate{{this._id}}">
+                stock update
+              </button>
+              
+              <!-- Modal -->
+               
+              
+            
+            </td> --}}
+           
+            <td>
+              {{#if this.status}}
+              <a href="/admin/block/{{this._id}}" class="btn btn-outline-danger">block</a>
+              {{else}}
+              <a href="/admin/unblock/{{this._id}}" class="btn btn-outline-success">unblock</a>
+              {{/if}}
+
+            </td>
+            <td>
+            <a href="/admin/delete/{{this._id}}">  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+       <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+  <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+            </svg></a>
+              {{!-- <a href="/admin/delete/{{this._id}}" class="btn btn-outline-danger">delete</a> --}}
+            </td>
+             <td>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#{{this._id}}">
+                more
+               </button>
+              {{!-- <a href="/admin/edit-product/{{this._id}}" class="btn btn-primary">edit</a> --}}
+            </td>
+          </tr>
+        {{/each}}
+        </tbody>
+
+      </table>
+    </div>
+
+
+  {{!-- stockupdatemodal --}}
+
+          {{#each products}}
+
+
+    <div class="modal fade" id="stockUpdate{{this._id}}" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+
+                      <h5 class="modal-title" id="exampleModalLongTitle">Stock update</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+             
+                    <div class="modal-body">
+
+                      
+                      <form action="/admin/stockupdate" method="post">
+                        <label for="">stock</label>
+                        <input type="text" name="stock" value="{{this.stock}}">
+                        <input type="text" name="proId" value="{{this._id}}" hidden>
+
+                    </div>
+                  
+                    <div class="modal-footer">
+
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="sumbit" class="btn btn-primary">Save changes</button>
+                      </form>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {{/each}}
+
+
+
+
+
+              {{!-- more --}}
+              {{#each products}}
+
+          <div class="modal fade" id="{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">product details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div><img src="/images/product/{{this.image}}" alt="" style="width:80px;height:80px ;"></div>
+          <br>
+          <div> <strong>{{this.name}}</strong></div>
+          <div>{{this.discription}}</div>
+          
+           
+        </div>
+         
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+         <a href="/admin/edit-product/{{this._id}}" class="btn btn-primary">edit</a>
+        {{!-- <button type="button" class="btn btn-primary">Save changes</button> --}}
+      </div>
+    </div>
+  </div>
+</div>
+
+{{/each}}
+  </section>
+</main>
+
+<script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" charset="utf8"
+  src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    $('#myTable').DataTable();
+  });
+</script>

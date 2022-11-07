@@ -1,0 +1,33 @@
+  <main id="main" class="main">
+<section>
+    <div class="container mt-5">
+        <div class="col-md-6 ">
+            <h2>Edit Brand</h2>
+
+
+            <form action="/admin/edit" method="post" id="something" enctype="multipart/form-data">
+                <label for="">Name</label>
+                <input type="text" name="brand" class="form-control" id="name" value="{{response.brand}}">
+                <br>
+                <label for="">image</label>
+                <br>
+                 <img src="/images/product/{{response.img.[0]}}" alt="" style="width: 100px;height: 60px;" id="imgview">
+                 <br>
+                   <input type="file" class="" name="image" id="gallery-photo-add" onchange="viewImg(event)" >
+                  <input type="text" value="{{response._id}}" name="id" hidden>
+                
+
+                <button type="submit" class="btn btn-success mt-4">Submit</button>
+                 <input type="button" value="Back" onclick="history.go(-1)" class="btn btn-primary "
+                    style="margin-top: 25px;margin-left: 10px;">
+            </form>
+        </div>
+    </div>
+    </section>
+    </main>
+    <script>
+        function viewImg(event){
+           
+            document.getElementById('imgview').src=URL.createObjectURL(event.target.files[0])
+        }
+    </script>

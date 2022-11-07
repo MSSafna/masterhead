@@ -1,0 +1,92 @@
+<!-- Include a required theme -->
+
+
+<main id="main" class="main">
+  <section>
+    <div class="container   align-content:">
+      <table class="table  mt-4 center" id="myTable">
+
+        <a href="/admin/addBrand" class="btn btn-success ml-auto mt-4 text-right">Add Brand</a>
+
+        <thead>
+          <tr>
+
+            <th scope="col">SI.No</th>
+            <th scope="col">Image</th>
+            <th scope="col">Brand Name</th>
+            <th scope="col">options</th>
+
+
+
+          </tr>
+        </thead>
+        <tbody>
+
+          {{#each brands}}
+          <tr>
+            <td>{{#indexing @index}}{{/indexing}}</td>
+            <td><img src="/images/product/{{this.img.[0]}}" alt="" style="width:100px;height: 50px;"></td>
+            <td class="col-2">{{this.brand}}</td>
+            <td>
+              <a href="/admin/edit/{{this._id}}" class="btn btn-success w-25">Edit</a>
+              
+              <button class="btn btn-danger w-25" onclick="hello('{{this._id}}')">Delete</button>
+            </td>
+
+          </tr>
+          {{/each}}
+        </tbody>
+
+      </table>
+    </div>
+  </section>
+</main>
+
+<script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" charset="utf8"
+  src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.min.js"></script>
+
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+<script>
+  function hello(brandId) {
+
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this imaginary file!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          $.ajax({
+            url: '/admin/deletebrand',
+
+            data: {
+              brand: brandId
+            },
+            method: 'post',
+            success: (response) => {
+              
+                
+                swal("Poof! Your imaginary file has been deleted!", {
+                  icon: "success",
+                  
+                }).then(function(){
+                                location.reload();
+                            })
+               
+              
+            }
+          })
+
+
+        } else {
+          swal("Your imaginary file is safe!");
+        }
+      });
+  }
+</script>
