@@ -103,11 +103,11 @@ router.get('/', async function (req, res, next) {
     if (req.session.user) {
       userHelpers.wishlistCount(req.session.user._id).then(async (wishCount) => {
        let Count = await userHelpers.cartCount(req.session.user._id)
-        res.render('homePage', { userHeader: true, brands, Count, userLogged: true, wishCount,homeTab:true});
+        res.render('homepage', { userHeader: true, brands, Count, userLogged: true, wishCount,homeTab:true});
       })
 
     } else {
-      res.render('homePage', { userHeader: true, brands,homeTab:true });
+      res.render('homepage', { userHeader: true, brands,homeTab:true });
     }
   })
 
@@ -116,6 +116,7 @@ router.get('/', async function (req, res, next) {
 });
 
 
+ 
 
 //......................................login........................................//
 
