@@ -6,6 +6,7 @@
 </style>
 
 <div class="container">
+   {{#if orders}}
   <table class="table">
     <thead>
       <th><strong>Order.ID</strong></th>
@@ -16,7 +17,8 @@
       <th><strong>Options</strong></th>
     </thead>
     <tbody>
-      {{#each orders}}
+     
+    {{#each orders}}
       <tr>
 
         <td data-label="S.No" class="col-3">{{this._id}}</td>
@@ -49,8 +51,19 @@
        
 
         {{/each}}
+        {{else}}
+        
 
     </tbody>
+   <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+                    <div class="container">
+                        <h1 class="page-title">You have no order summary</span></h1>
+                         
+                    </div><!-- End .container -->
+                    <a href="/products?page=1" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE
+                                            SHOPPING</span><i class="icon-refresh"></i></a>
+                </div><!-- End .page-header -->
+        {{/if}}
   </table>
 </div>
 <!-- Button trigger modal -->

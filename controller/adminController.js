@@ -9,7 +9,7 @@ const { post } = require('../routes/user');
 
 let credentials = {
   password: process.env.password,
-  email: process.env.email
+  email:'abc@gmail.com'
 }
 
 
@@ -49,14 +49,19 @@ const getAdminLogin = (req, res) => {
 }
 //.......................................................confirmAdmin....................// 
 const confirmAdmin = (req, res) => {
-  if (req.body.password == credentials.password && req.body.email == credentials.email) {
+ 
+  if (req.body.password ==credentials.password && req.body.email == credentials.email) {
     req.session.adminLogged = true
     req.session.admin = res.admin
     // console.log(req);
     res.redirect('/admin/login')
   } else {
+    console.log('3333333333333');
     req.session.err = 'invalid details'
     res.redirect('/admin')
+   
+  
+   
   }
 }
 //...................................................view Products............................//

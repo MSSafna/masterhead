@@ -523,7 +523,7 @@ router.get('/checkout', sessionHandler, async (req, res) => {
 router.get("/checkoutaddAddress", sessionHandler, (req, res) => {
   userId = req.session.user._id
 
-  res.render('checkoutAddAddress', { userId })
+  res.render('checkoutAddAddress', { userId,userLogged:true,userHeader:true })
 })
 
 router.post('/checkoutaddAddress', (req, res) => {
@@ -684,8 +684,9 @@ router.get('/order-history', sessionHandler, async (req, res) => {
   userHelpers.wishlistCount(req.session.user._id).then(async (wishCount) => {
 
     let orders = await userHelpers.getOrderDetails(req.session.user._id)
-
-      res.render('order', { userLogged: true, userHeader: true, orders, wishCount,orderTab:true })
+    
+    let Count = await userHelpers.cartCount(req.session.user._id)
+      res.render('order', { userLogged: true, userHeader: true, orders, wishCount,orderTab:true,Count })
   
   })
 
@@ -1046,9 +1047,11 @@ router.post('/getProducts', async (req, res) => {
 
 
 router.get('/invoice/:Id',(req,res)=>{
+  
    console.log(req.params.Id);
   userHelper.getOrderInvoice(req.params.Id).then((order)=>{
   
+
     console.log(order);
     
     res.render('invoice',{order,userHeader:true,userLogged:true})

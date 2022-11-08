@@ -442,6 +442,8 @@ module.exports = {
 
                         .then(() => {
                             db.get().collection(collection.ORDER_COLLECTION).insertOne(orderDetails).then((response) => {
+                             
+                                console.log(response);
                                 resolve(response)
                             })
 
@@ -449,7 +451,7 @@ module.exports = {
                 } else {
 
                     db.get().collection(collection.ORDER_COLLECTION).insertOne(orderDetails).then((response) => {
-                       
+                       console.log(response);
                         resolve(response)
                     })
                 }
