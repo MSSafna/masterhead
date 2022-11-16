@@ -725,7 +725,7 @@ module.exports = {
     //............................................................getAllOrders.......................................//   
     getAllOrders: () => {
         return new Promise(async (resolve, reject) => {
-            let details = await db.get().collection(collections.ORDER_COLLECTION).find({PaymentStatus:{$in:["Successful"]}}).sort({ "_id": -1 }).toArray()
+            let details = await db.get().collection(collections.ORDER_COLLECTION).find({PaymentStatus:{$eq:'Successful'}}).sort({ "_id": -1 }).toArray()
             resolve(details)
           
         })
