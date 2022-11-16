@@ -227,10 +227,11 @@ function addToCart(productId) {
     success: (response) => {
       if (response.status) {
         // swal("Good job!", "Added to the cart!", "success");
-        swal("Added to cart", {
-          icon: "success",
-
-        }).then(function () {
+        swal({
+          title:("Added to cart"),
+     
+        icon: "success",
+      button: "Ok"}).then(function () {
           let count = $("#cartCount").html()
           count = parseInt(count) + 1;
           $("#cartCount").html(count);
