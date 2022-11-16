@@ -12,7 +12,7 @@ module.exports.connect=function(done){
             console.log(err);
             return done(err);
         }else{
-            state.db=data.db(dbname)
+            state.db=data.db(dbname);
             done()
         }
         
