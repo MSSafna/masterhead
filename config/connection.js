@@ -18,6 +18,7 @@ module.exports.connect=function(done){
         
     })
 }
+
 module.exports.get=function(){
     return state.db
 }
