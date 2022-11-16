@@ -10,7 +10,7 @@ module.exports.connect=function(done){
     mongocilent.connect(url,(err,data)=>{
         if(err){
             console.log(err);
-            return done(err)
+            return done(err);
         }else{
             state.db=data.db(dbname)
             done()
