@@ -41,7 +41,15 @@ const expressHelpers=hbs.create({
         orderConfirmedtrackOrder:hbsHelpers.orderConfirmedtrackOrder,
         deliveredTrackOrder:hbsHelpers.deliveredTrackOrder,
         trackOrderDisplay:hbsHelpers.trackOrderDisplay,
-        deliveryDate:hbsHelpers.deliveryDate
+        deliveryDate:hbsHelpers.deliveryDate,
+        totalAftercoupon:hbsHelpers.totalAftercoupon,
+        totalPrice:hbsHelpers.totalPrice,
+        Productstatus:hbsHelpers.Productstatus,
+        Productcancelled:hbsHelpers.Productcancelled,
+        totalPrice:hbsHelpers.totalPrice,
+        adminChangeStatus:hbsHelpers.adminChangeStatus,
+        trackOrderDisplay:hbsHelpers.trackOrderDisplay,
+        orderHistoryviewCart:hbsHelpers.orderHistoryviewCart
       }
 })
 app.engine('hbs', expressHelpers.engine)

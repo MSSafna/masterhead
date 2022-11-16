@@ -1,4 +1,94 @@
 <!-- Font Awesome -->
+<style>
+    .gradient-custom-2 {
+/* fallback for old browsers */
+background: #a1c4fd;
+
+/* Chrome 10-25, Safari 5.1-6 */
+background: -webkit-linear-gradient(to right, rgba(161, 196, 253, 1), rgba(194, 233, 251, 1));
+
+/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+background: linear-gradient(to right, rgba(161, 196, 253, 1), rgba(194, 233, 251, 1))
+}
+
+#progressbar-1 {
+color: #455A64;
+}
+
+#progressbar-1 li {
+list-style-type: none;
+font-size: 13px;
+width: 33.33%;
+float: left;
+position: relative;
+}
+
+#progressbar-1 #step1:before {
+content: "1";
+color: #fff;
+width: 29px;
+margin-left: 22px;
+padding-left: 11px;
+}
+
+#progressbar-1 #step2:before {
+content: "2";
+color: #fff;
+width: 29px;
+}
+
+#progressbar-1 #step3:before {
+content: "3";
+color: #fff;
+width: 29px;
+margin-right: 22px;
+text-align: center;
+}
+
+#progressbar-1 li:before {
+line-height: 29px;
+display: block;
+font-size: 12px;
+background: #455A64;
+border-radius: 50%;
+margin: auto;
+}
+
+#progressbar-1 li:after {
+content: '';
+width: 121%;
+height: 2px;
+background: #455A64;
+position: absolute;
+left: 0%;
+right: 0%;
+top: 15px;
+z-index: -1;
+}
+
+#progressbar-1 li:nth-child(2):after {
+left: 50%
+}
+
+#progressbar-1 li:nth-child(1):after {
+left: 25%;
+width: 121%
+}
+
+#progressbar-1 li:nth-child(3):after {
+left: 25%;
+width: 50%;
+}
+
+#progressbar-1 li.active:before,
+#progressbar-1 li.active:after {
+background: #1266f1;
+}
+
+.card-stepper {
+z-index: 0
+}
+</style>
 <link
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
   rel="stylesheet"
@@ -9,176 +99,93 @@
   rel="stylesheet"
 />
 <!-- MDB -->
-{{!-- <link
+<link
   href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.css"
   rel="stylesheet"
-/> --}}
-
-<style>
-
-    .track-line {
-height: 2px !important;
-background-color: #488978;
-opacity: 1;
-}
-
-    .track-line2 {
-height: 2px !important;
-background-color:#488978;
-opacity:0.2 ;
-}
-
-.dot {
-height: 10px;
-width: 10px;
-margin-left: 3px;
-margin-right: 3px;
-margin-top: 0px;
-background-color: #488978;
-border-radius: 50%;
-display: inline-block
-}
-
-.dot2 {
-height: 10px;
-width: 10px;
-margin-left: 3px;
-margin-right: 3px;
-margin-top: 0px;
-background-color: #488978;
-border-radius: 50%;
-display: inline-block;
-opacity:0.2
-}
-.big-dot {
-height: 25px;
-width: 25px;
-margin-left: 0px;
-margin-right: 0px;
-margin-top: 0px;
-background-color: #488978;
-border-radius: 50%;
-display: inline-block;
-}
-
-.big-dot i {
-font-size: 12px;
-}
-
-.card-stepper {
-z-index: 0
-}
-</style>
+/>
 
 
-<section class="vh-90" >
-  <div class="container py-5 h-100 ">
-    <div class="row d-flex justify-content-center align-items-center h-100" >
-      <div class="col ">
-        <div class="card card-stepper" style="border-radius: 10px;margin-top: 30px;background-color:#eee ;">
-          <div class="card-body p-4" >
-
-            <div class="d-flex justify-content-between align-items-center ">
-              <div class="d-flex flex-column">
-                 {{#deliveredTrackOrder orderDetails.AdminStatus}}
-                <span class="lead fw-normal" style="font-size:20px ;">Your order has been delivered</span>
-               
-                {{else}}
-                 <span class="lead fw-normal" style="font-size:20px ;">Your order has yet to be deliver</span>
-                 <span style="margin-top:-10px;">Order Date :&nbsp;{{../orderDetails.date}}</span>
-                  <span style="margin-top:-5px;">Expected to be deliver on :&nbsp;{{#deliveryDate ../orderDetails.date}}</span>
-                  {{/deliveryDate}}
-                 {{/deliveredTrackOrder}}
-                
+<section class="vh-100 gradient-custom-2">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-10 col-lg-8 col-xl-6">
+        <div class="card card-stepper" style="border-radius: 16px;">
+          <div class="card-header p-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <p class="text-muted mb-2"> Order ID <span class="fw-bold text-body">{{orderDetails._id}}</span></p>
+                <p class="text-muted mb-0"> Place On <span class="fw-bold text-body">&nbsp;{{orderDetails.date}}</span> </p>
               </div>
-              
+              <div>
+                <h6 class="mb-0"> <a href="/viewDetails/{{orderDetails._id}}">View Details</a> </h6>
+              </div>
             </div>
-            <hr class="my-4">
-
-                  <div class="d-flex flex-row justify-content-between align-items-center align-content-center">
-              <span class="dot"></span>
-
-              {{#orderConfirmedtrackOrder orderDetails.AdminStatus}}
-              <hr class="flex-fill track-line"><span class="dot"></span> 
-              {{else}}
-               <hr class="flex-fill track-line2"><span class="dot2 "></span>
-              {{/orderConfirmedtrackOrder}}
-
-                {{#shippedTrackOrder orderDetails.AdminStatus}}
-                 <hr class="flex-fill track-line"><span class="dot"></span>
-                  
-                 {{else}}
-                 <hr class="flex-fill track-line2"><span class="dot2 "></span>
-                 {{/shippedTrackOrder}}
-
+          </div>
+          <div class="card-body p-4">
+            <div class="d-flex flex-row mb-4 pb-2">
+              <div class="flex-fill">
+                <h4 class="bold">{{productDetails.name}}</h4>
+                <h5 class="mb-3"> Payment method <span class="larger text-muted "> via &nbsp;{{orderDetails.paymentMethod}} </span></h5>
+                <h5 class="mb-3"> Expected to delivey on <span class="larger text-muted">&nbsp;{{deliveryDate orderDetails.date}}</span></h5>
+               <h5 class="mb-3"> Quantity <span class="larger text-muted">&nbsp; {{orderDetails.prodetails.quantity}} </span></h5>
+              <h5 class="mb-3"> Tracking Status on: <span class="larger text-muted">&nbsp; {{orderDetails.prodetails.productstatus}} </span></h5>
                  
-
-                  {{#deliveredTrackOrder orderDetails.AdminStatus}}
-                   
-              <hr class="flex-fill track-line"><span class="dot"></span>
-              <hr class="flex-fill track-line"><span
-                class="d-flex justify-content-center align-items-center big-dot dot">
-                <i class="fa fa-check text-white"></i></span>
-                 {{else}}
-                  <hr class="flex-fill track-line2"><span class="dot2"></span>
-              <hr class="flex-fill track-line2"><span
-                class="d-flex justify-content-center align-items-center big-dot dot2">
-                <i class="fa fa-check text-white"></i></span>
-                {{/deliveredTrackOrder}}
-            </div>
-           
-
-
-
-
-
-
-            <div class="d-flex flex-row justify-content-between align-items-center">
-              <div class="d-flex flex-column align-items-start" style="font-size:15px"><span>{{orderDetails.date}}</span><span>Order placed</span>
+               
               </div>
-           
-              
+              <div>
+                <img class="align-self-center img-fluid"
+                  src="/images/product/{{productDetails.img.[0]}}" width="150">
+              </div>
+            </div>
+            <ul id="progressbar-1" class="mx-0 mt-0 mb-5 px-0 pt-0 pb-4">
+              {{#orderConfirmedtrackOrder orderDetails.prodetails.productstatus}}
+              <li class="step0 active" id="step1"><span
+               style="margin-left: 22px; margin-top: 12px;">PLACED</span></li>
+               {{/orderConfirmedtrackOrder}}
 
-
-               {{#orderConfirmedtrackOrder orderDetails.AdminStatus}}
-              <div class="d-flex flex-column justify-content-center" style="font-size:15px"><span>Order
-                  confirmed</span></div>
-                  {{else}}
-                  <div class="d-flex flex-column justify-content-center disable" style="font-size:15px"><span style="color: rgb(199, 196, 196);">Order
-                  confirmed</span></div>
-                  {{/orderConfirmedtrackOrder}} 
-
-
-                   {{#shippedTrackOrder orderDetails.AdminStatus}}
+              {{#shippedTrackOrder orderDetails.prodetails.productstatus }}
+              <li class="step0 active text-center" id="step2"><span>SHIPPED</span></li>
+              {{else}}
+                 <li class="step0  text-center" id="step2"><span>SHIPPED</span></li>
+                 {{/shippedTrackOrder}}
+                
+                {{#Productcancelled  orderDetails.prodetails.productstatus}}
+                    <li class="step0 active text-center" id="step3" ><span>Order Cancelledd</span></li>
                    
-                   <div class="d-flex flex-column align-items-center" style="font-size:15px"><span>Out for
-                  delivery</span></div>
-              <div class="d-flex flex-column justify-content-center align-items-center" style="font-size:15px">
-                  <span>Shipped</span></div>
-                  {{else}}
-                  <div class="d-flex flex-column align-items-center" style="font-size:15px"><span style="color: rgb(199, 196, 196);">Out for
-                  delivery</span></div>
-                  <div class="d-flex flex-column justify-content-center align-items-center ;" style="font-size:15px;color: rgb(199, 196, 196)">
-                 <span style="color: rgb(199, 196, 196);">Shipped</span></div>
-                  {{/shippedTrackOrder}}
+                    {{/Productcancelled}}
 
-                  {{#deliveredTrackOrder orderDetails.AdminStatus}}
-              
-              <div class="d-flex flex-column align-items-end" style="font-size:15px"><span>Delivered</span></div>
+                 {{#deliveredTrackOrder orderDetails.prodetails.productstatus}}
+                 <li class="step0 active text-end" id="step3"><span
+                  style="margin-right: 22px;">DELIVERED</span></li>
+                  {{else}}
+                  <li class="step0 text-muted text-end" id="step3"><span
+                  style="margin-right: 22px;">DELIVERED</span></li>
+                  {{/deliveredTrackOrder}}
+
+                  {{#ifEquals orderDetails.prodetails.productstatus 'Product cancelled'}}
+                   <li class="step0 text-muted text-end " id="step3" hidden><span
+                  style="margin-right: 22px;" hidden>DELIVERED</span></li>
+                  {{/ifEquals}}
+                 
+            </ul>
+          </div>
+          <div class="card-footer p-4">
+            <div class="d-flex justify-content-between">
+              {{!-- <h5 class="fw-normal mb-0"><a href="/viewDetails/{{orderDetails._id}}">Back to orders</a></h5> --}}
+              {{!-- <div class="border-start h-100"></div>
+              <h5 class="fw-normal mb-0"><a href="#!">Cancel</a></h5>
+              <div class="border-start h-100"></div>
+              <h5 class="fw-normal mb-0"><a href="#!">Pre-pay</a></h5>
+              <div class="border-start h-100"></div>
+              <h5 class="fw-normal mb-0"><a href="#!" class="text-muted"><i class="fas fa-ellipsis-v"></i></a> --}}
+              </h5>
             </div>
-            {{else}}
-             <div class="d-flex flex-column align-items-end" style="font-size:15px"><span style="color: rgb(199, 196, 196);">Delivered</span></div>
-            </div>
-            {{/deliveredTrackOrder}}
-            
           </div>
         </div>
       </div>
     </div>
   </div>
-  
 </section>
-
 <!-- MDB -->
 <script
   type="text/javascript"

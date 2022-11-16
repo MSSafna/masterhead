@@ -57,11 +57,7 @@
                         data-bs-target="#bordered-justified-home" type="button" role="tab" aria-controls="home"
                         aria-selected="true">Return Details</button>
                 </li>
-                <li class="nav-item flex-fill" role="presentation">
-                    <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab"
-                        data-bs-target="#bordered-justified-profile" type="button" role="tab" aria-controls="profile"
-                        aria-selected="false">Refund Details</button>
-                </li>
+                
 
             </ul>
             <div class="tab-content pt-2" id="borderedTabJustifiedContent">
@@ -85,9 +81,9 @@
                                     <tr>
                                         <th scope="col-3">SI.No</th>
                                         <th scope="col-3">Order Id</th>
-                                        <th scope="col-3">Name</th>
-                                        <th scope="col-3">Payment Method</th>
-                                        <th scope="col-3">Status</th>
+                                        <th scope="col-3">Product Id</th>
+                                        <th scope="col-3">Payment method</th>
+                                        <th scope="col-3">Product status</th>
                                         <th scope="col-3">Option</th>
 
                                     </tr>
@@ -100,13 +96,13 @@
                                     <tr>
                                         {{!-- <th scope="row"><input type="checkbox" /></th> --}}
                                         <td class="tm-product-name">1</td>
-                                        <td class="tm-product-name">{{this._id}}</td>
-                                        <td class="tm-product-name">{{this.Address.fullName}}</td>
+                                        <td class="tm-product-name">{{this.orderId}}</td>
+                                        <td class="tm-product-name">{{this.productId}}</td>
                                         <td class="tm-product-name">{{this.paymentMethod}}</td>
-                                        <td class="tm-product-name">{{this.AdminStatus}}</td>
+                                        <td class="tm-product-name">{{this.productStatus}}</td>
                                         <td>
                                             
-                                            <a href="/admin/return-product-details/{{this._id}}"
+                                            <a href="/admin/return-product-details/?orderId={{this.orderId}}&productId={{this.productId}}"
                                                 class="btn btn-primary " >More</a>
                                                 
                                         </td>
@@ -131,62 +127,7 @@
 
                 </div>
 
-                <div class="tab-pane fade" id="bordered-justified-profile" role="tabpanel"
-                    aria-labelledby="profile-tab">
-                    <div class="card">
-                        <div class="card-body mt-3">
-
-                            <table class="table table-hover" id="dailyReport">
-                                <thead>
-                                    <tr>
-                                        <th scope="col-3">SI.No</th>
-                                        <th scope="col-3">Order Id</th>
-                                        <th scope="col-3">Name</th>
-                                        <th scope="col-3">Payment Method</th>
-                                        <th scope="col-3">Status</th>
-                                         <th scope="col-3">Refund Amount</th>
-                                        <th scope="col-3">Option</th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                    {{#each details}}
-
-
-                                    <tr>
-                                        {{!-- <th scope="row"><input type="checkbox" /></th> --}}
-                                        <td class="tm-product-name">1</td>
-                                        <td class="tm-product-name">{{this._id}}</td>
-                                        <td class="tm-product-name">{{this.Address.fullName}}</td>
-                                        <td class="tm-product-name">{{this.paymentMethod}}</td>
-                                        
-                                        <td class="tm-product-name">{{this.AdminStatus}}</td>
-                                         <td class="tm-product-name">{{this.total}}</td>
-                                        <td>
-                                         
-                                          
-                                            <button class="btn btn-primary"
-
-                                            onclick="adminRefundApproved('{{this._id}}','Refund')">Refund</button>
-                                           
-                                        </td>
-                                    </tr>
-
-                                    {{/each}}
-
-
-                                </tbody>
-
-                            </table>
-
-
-
-
-                        </div>
-                    </div>
-
-                </div>
+                
                 <div class="tab-pane fade" id="bordered-justified-contact" role="tabpanel"
                     aria-labelledby="contact-tab">
 

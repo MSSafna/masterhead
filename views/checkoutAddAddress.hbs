@@ -2,8 +2,6 @@
 
 <section>
     <div class="page-wrapper">
-
-
         <main class="main">
             <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
                 <div class="container">
@@ -16,14 +14,14 @@
                 <div class="checkout">
                     <div class="container">
                         
-                        <form action="/checkoutaddAddress" method="post"  onsubmit="return check()">
+                        <form action="/checkoutaddAddress" method="post"  onsubmit="return validation()">
                             <div class="row">
                                 <div class="col-lg-9">
                                   
                                     <div class="row mt-3">
                                         <div class="col-sm-6">
                                             <label>Full Name *</label>
-                                            <input type="text" class="form-control" name="fullName" id="fullname" onkeyup="validateName()">
+                                            <input type="text" class="form-control" name="fullName" id="fullName" onkeyup="validateName()" >
                                             <span id="fullNameErr" class="text-danger"></span>
                                         </div><!-- End .col-sm-6 -->
 
@@ -60,7 +58,8 @@
 
                                         <div class="col-sm-6">
                                             <label>Phone *</label>
-                                            <input type="tel" class="form-control" name="phone">
+                                            <input type="tel" class="form-control" name="phone" id="phone" onkeyup="validatePhone()">
+                                            <span id="phoneErr" class="text-danger"></span>
                                         </div><!-- End .col-sm-6 -->
                                     </div><!-- End .row -->
 
@@ -85,88 +84,7 @@
             </div><!-- End .page-content -->
         </main><!-- End .main -->
 
-        <footer class="footer">
-            <div class="footer-middle">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="widget widget-about">
-                                <img src="/product-image/logomh1.jpg" class="footer-logo" alt="Footer Logo" width="50"
-                                    height="50  ">
-                                <p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate
-                                    magna eros eu erat. </p>
-
-                                <div class="social-icons">
-                                    <a href="#" class="social-icon" target="_blank" title="Facebook"><i
-                                            class="icon-facebook-f"></i></a>
-                                    <a href="#" class="social-icon" target="_blank" title="Twitter"><i
-                                            class="icon-twitter"></i></a>
-                                    <a href="#" class="social-icon" target="_blank" title="Instagram"><i
-                                            class="icon-instagram"></i></a>
-                                    <a href="#" class="social-icon" target="_blank" title="Youtube"><i
-                                            class="icon-youtube"></i></a>
-                                    <a href="#" class="social-icon" target="_blank" title="Pinterest"><i
-                                            class="icon-pinterest"></i></a>
-                                </div><!-- End .soial-icons -->
-                            </div><!-- End .widget about-widget -->
-                        </div><!-- End .col-sm-6 col-lg-3 -->
-
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="widget">
-                                <h4 class="widget-title">Useful Links</h4><!-- End .widget-title -->
-
-                                <ul class="widget-list">
-                                    <li><a href="about.html">About Molla</a></li>
-                                    <li><a href="#">How to shop on Molla</a></li>
-                                    <li><a href="#">FAQ</a></li>
-                                    <li><a href="contact.html">Contact us</a></li>
-                                    <li><a href="login.html">Log in</a></li>
-                                </ul><!-- End .widget-list -->
-                            </div><!-- End .widget -->
-                        </div><!-- End .col-sm-6 col-lg-3 -->
-
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="widget">
-                                <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
-
-                                <ul class="widget-list">
-                                    <li><a href="#">Payment Methods</a></li>
-                                    <li><a href="#">Money-back guarantee!</a></li>
-                                    <li><a href="#">Returns</a></li>
-                                    <li><a href="#">Shipping</a></li>
-                                    <li><a href="#">Terms and conditions</a></li>
-                                    <li><a href="#">Privacy Policy</a></li>
-                                </ul><!-- End .widget-list -->
-                            </div><!-- End .widget -->
-                        </div><!-- End .col-sm-6 col-lg-3 -->
-
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="widget">
-                                <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
-
-                                <ul class="widget-list">
-                                    <li><a href="#">Sign In</a></li>
-                                    <li><a href="cart.html">View Cart</a></li>
-                                    <li><a href="#">My Wishlist</a></li>
-                                    <li><a href="#">Track My Order</a></li>
-                                    <li><a href="#">Help</a></li>
-                                </ul><!-- End .widget-list -->
-                            </div><!-- End .widget -->
-                        </div><!-- End .col-sm-6 col-lg-3 -->
-                    </div><!-- End .row -->
-                </div><!-- End .container -->
-            </div><!-- End .footer-middle -->
-
-            <div class="footer-bottom">
-                <div class="container">
-                    <p class="footer-copyright">Copyright © 2019 Molla Store. All Rights Reserved.</p>
-                    <!-- End .footer-copyright -->
-                    <figure class="footer-payments">
-                        <img src="assets/images/payments.png" alt="Payment methods" width="272" height="20">
-                    </figure><!-- End .footer-payments -->
-                </div><!-- End .container -->
-            </div><!-- End .footer-bottom -->
-        </footer><!-- End .footer -->
+        
     </div><!-- End .page-wrapper -->
     <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
 
@@ -178,28 +96,30 @@
 
 </section>
 <script src="/assets2/js/main.js"></script>
+
   <script>
-  alert('hello')
+  
     let nameErr=document.getElementById('fullNameErr')
     let addressErr=document.getElementById('addressErr')
-    let townErr=document.getElementById('townerr')
+    let townErr=document.getElementById('townErr')
     let stateErr=document.getElementById('stateErr')
     let postErr=document.getElementById('postErr')
-
+    let phoneErr=document.getElementById('phoneErr')
     function validateName(){
         var fullName=document.getElementById('fullName').value
         if(fullName==""){
-            nameErr='enter your name'
+           
+            nameErr.innerHTML='enter your name'
             return false
         }
          nameErr.innerHTML=null
          return true 
     }
     
-    function validateAddress(){
+     function validateAddress(){
         var address=document.getElementById('address').value
           if (address==''){
-            addressErr='enter your address'
+            addressErr.innerHTML='enter your address'
             return false
           }
           addressErr.innerHTML=null
@@ -209,10 +129,10 @@
     function valiadateTown(){
         var town=document.getElementById('town').value
         if(town==""){
-            townErr='enter your town'
+            townErr.innerHTML='enter your town'
             return false
         }
-        townErr.innerHTML=null,
+        townErr.innerHTML=null
         return true
     }
 
@@ -222,30 +142,38 @@
             stateErr='enter your state'
              return false
            }
-         stateErr.innerHTML=null;
+         stateErr.innerHTML=null
          return true 
    }
+
 function validatePostcode(){
     var post=document.getElementById('post').value
     if(post==""){
         postErr='enter your postcode'
         return false
     }
-    
+    postErr.innerHTML=null
+    return true
 }
+ 
+ function validatePhone(){
+    var phone=document.getElementById('phone').value
+    if(phone==""){
+        phoneErr='enter your phone'
+        return false
+    }
+    phoneErr.innerHTML=null
+    return true
+ }
 
-function check(){
-    alert('check')
-     let validatearray =[!validateName(),!validateAddress(),!valiadateTown(),!validateState(),!validatePostcode()]
-     return validatearray.every(validation)
-}
+
 
  function validation() {
       
-        if (!validateName() || !validateAddress() || !valiadateTown() || !validateState() ||validatePostcode) {
+        if (!validateName() || !validateAddress() || !valiadateTown() || !validateState() || !validatePostcode()) {
             return false
         }
         return true
-    }  
+    }   
 
   </script>

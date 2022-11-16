@@ -36,12 +36,7 @@
              
                 <div class="card-body">
                     <h5 class="card-title">other Details</h5>
-                    <p class="card-text"><strong>paymentMethod</strong>&nbsp;:&nbsp;{{address.paymentMethod}}</p>
-                    <p class="card-text"><strong>Order Status</strong>&nbsp;:&nbsp;
-                        
-                        <span style="color: gray;font-weight: 600;" >{{details.[0].orderDetails.AdminStatus}}</span>
-                        
-                    
+                    <p class="card-text"><strong>paymentMethod</strong>&nbsp;:&nbsp;{{address.paymentMethod}}</p>                                                                  
                     <p class="card-text"><strong>Date</strong>&nbsp;:&nbsp;{{address.date}}</p>
                 </div>
             </div>
@@ -54,6 +49,8 @@
                 <th><strong>Name</strong></th>
                 <th><strong>quantity</strong></th>
                 <th><strong>Total Price</strong></th>
+                <th><strong>Product Status</strong></th>
+                <th><strong>Option</strong></th>
                 {{!-- <th><strong>Status</strong></th> --}}
 
             </thead>
@@ -79,13 +76,24 @@
                  {{#each this.productList}}
                 <tr>
                     
-                    <td data-label="S.No" class="col-3"><img src="/images/product/{{this.product.img.[0]}}" alt=""
+                    <td data-label="S.No" class="col-1"><img src="/images/product/{{this.product.img.[0]}}" alt=""
                             style="width: 70px;height: 70px;"></td>
-                    <td data-label="Name">{{this.product.name}}</td>
+                    <td data-label="Name" class="col-4">{{this.product.name}}</td>
 
-                    <td data-label="Marks%">{{this.quantity}}</td>
+                    <td data-label="Marks%" class="col-1">{{this.quantity}}</td>
                     <td data-label="Marks%">{{this.total}}</td>
-                   
+                    
+                     <td data-label="Marks%"><strong>{{this.productstatus}}</strong></td>
+                    
+                    <td>
+                        {{#adminChangeStatus this.productstatus}} 
+                       <button type="button" class="btn btn-success disabled " data-toggle="modal" data-target="#{{this.product._id}}"
+                        style="width: max-content; "> change status</button> 
+                        {{else}}
+                        <button type="button" class="btn btn-success  " data-toggle="modal" data-target="#{{../this.product._id}}"
+                        style="width: max-content; "> change status</button>     
+                        {{/adminChangeStatus}}
+                    </td>
                    
                     {{!-- <td data-label="Marks%"> {{./details.[0].orderDetails.AdminStatus}} </td> --}}
                    
@@ -99,29 +107,14 @@
                    
             </tbody>
                
-            </table>
-
-        <!-- Button trigger modal -->
-        <!-- Button trigger modal -->
-          
-         
-         {{#AdminlogicalOr this.orderDetails.AdminStatus }}
-        <button type="button" class="btn btn-success mr-5 disabled" data-toggle="modal" data-target="#exampleModalCenter"
-            style="width: max-content; float:right;"> change status</button>
-        {{else}}
-        <button type="button" class="btn btn-success mr-5 " data-toggle="modal" data-target="#exampleModalCenter"
-            style="width: max-content; float:right; "> change status</button>
-            
-           
-           
-            {{/AdminlogicalOr}}    
+            </table>     
         {{/each}}
         <!-- Modal -->
 
         {{#each details}}
 
-
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+         {{#each this.productList}}
+        <div class="modal fade" id={{this.product._id}} tabindex="-1" role="dialog"
             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -132,30 +125,26 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <select name="" id="changestatus" style="width:100%;height: 30px;">
+                        <select name="" id="changestatus{{this.product._id}}" style="width:100%;height: 30px;">
                             
-                            {{#ifEquals this.orderDetails.AdminStatus 'Return confirmed'}} 
-                            
-                            <option>Return confirmed</option>
-                            <option >Refund</option>
-                             
-                            {{else}}
+                           
                                
-                             <option>order confirmed</option>
+                             
                             <option>Shipped</option>
                             <option>Delivered</option>
                              
-                            {{/ifEquals}}
+                           
 
                         </select>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button class="btn btn-primary" onclick="changeStatus('{{this._id}}')">Save changes</button>
+                        <button class="btn btn-primary" onclick="changeStatus('{{../this._id}}','{{this.product._id}}')">Save changes</button>
                     </div>
                 </div>
             </div>
         </div>
+        {{/each}}
 {{/each}}
 
 

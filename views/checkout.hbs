@@ -207,36 +207,39 @@
                 <div class="checkout">
                     <div class="container">
                         <div class="checkout-discount mt-3">
-                            <form  action="/applyCoupon" method="post">
-                            {{#if err}}
-                            <p style="color: red;">{{err}}</p>
-                            {{/if}}
-                           
-                                <input type="text" class="form-control" id="checkout-discount-input" name="couponCode" value="{{couponDetails._id}}">
-                             
+                            <form id="couponAplly" >
+                              {{#if err}}
+                              <p style="color: red;">{{err}}</p>
+                              {{/if}} 
+                                        {{#if user.couponDetails}}       
+                                <input type="text" class="form-control bg-dark" id="checkout-discount-input" name="couponCode"  placeholder="{{user.couponDetails.couponCode}}">
+                                {{else}}
+                                <input type="text" class="form-control bg-dark" id="checkout-discount-input" name="couponCode" >
+                                   {{/if}}
                                 <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click
                                         here to enter your code</span></label>
                                       <input type="text" value="{{userId}}" name="userId" hidden >
-                                      {{#if couponDetails}}  
-                                      <a href="/removeCoupon/{{couponDetails.couponCode}}" type="button" class="btn btn-danger mt-4" >Remove Coupon</a>
-                                     
-                                      {{else}}
-                                        <button type="submit" class="btn btn-success mt-2" >Apply Coupon</button>
+                                      {{#if user.couponDetails}}  
+                                      
+                                      <button type="button" class="btn btn-danger mt-4" onclick="removeCoupon()">Remove Coupon</button>
+                                          {{else}}
+                                        <button type="submit" class="btn btn-success mt-2" onclick="couponvalidate()" >Apply Coupon</button>
                                         {{/if}}
-                                        
+                                     
                             </form>
                         </div><!-- End .checkout-discount -->
                           
                         <form   id="checkoutform">
-                            <div class="row">
+                            <div class="row ">
                                 
                                   
                                 <div class="col-lg-9 mt-3">
                                   
-                                   {{#each Address}}
+                                   
 
-                                    <div  >
-                                        <label class="card">
+                                    <div >
+                                        {{#each Address}}
+                                        <label class="card" >
                                             <input name="Address" class="radio" type="radio"  value="{{this._id}}" checked   >
 
                                             <span class="plan-details">
@@ -252,21 +255,21 @@
                                                      <span>Email:&nbsp;&nbsp;{{this.email}}</span>
                                                      <div style="display: flex;margin-left: 50%;">
                                                      {{!-- <a href="/remove/{{this._id}}" class="btn btn-primary" style="width: max-content;" onclick="return confirm('want to delete')">remove</a> --}}
-                                                      {{!-- <a href="/edit/{{this._id}}" class="btn btn-success ml-3" style="width: max-content;">edit</a> --}}
-                                                   <a href="/edit/{{this._id}}"> <i class="bi bi-pen "><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                                      <a href="/edit/{{this._id}}" class="btn btn-info ml-3" style="width: max-content;">edit</a>
+                                                   {{!-- <a href="/edit/{{this._id}}"> <i class="bi bi-pen "><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                                      class="bi bi-pen" viewBox="0 0 16 16">
                                                         <path
                                                            d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
-                                                            </svg></i> Edit</a>                                                                                                                                                     
+                                                            </svg></i> Edit</a>                                                                                                                                                      --}}
                                                                                                                                                                                   
              
                                              </div>
                                              </span>
                                         </label>
                                        
-
+                                    {{/each}}
                                     </div>
-                                   {{/each}}
+                                   
 
 
                                    <a href="/checkoutaddAddress" class="btn btn-warning mt-5">Add address</a>
@@ -305,57 +308,46 @@
                                                     <td>Subtotal:</td>
                                                     <td >{{total}}</td>
                                                 </tr><!-- End .summary-subtotal -->
-                                                 {{#if couponDetails}}
-                                                 <tr class="summary-subtotal">
-                                                    <td>Coupon Offer</td>
-                                                    <td >{{couponDetails.couponPercentage}}%</td>
+                                                 {{#if user.couponDetails}}
+                                                      
+                                                   <tr class="summary-subtotal" id="couponOffer" style="">
+                                                    <td>Offer Percentage</td>
+                                                    <td id="couponOfferSub"  style=""  >{{user.couponDetails.couponPercentage}}%</td>
                                                 </tr>
-                                                <tr>
-                                                    <td>Shipping:</td>
-                                                    <td>Free shipping</td>
+                                                <tr class="summary-subtotal"  id="Maxoffer">
+                                                   <td>Offer Price</td>
+                                                    <td id="MaxofferSub" >{{user.couponDetails.Maxoffer}}</td>
                                                 </tr>
                                                 <tr class="summary-total" >
                                                     <td>Total:</td>
-                                                    <td id="total">{{couponDetails.total}}</td>
-                                                </tr><!-- End .summary-total -->
-                                             {{else}}
-                                             <tr class="summary-total" >
-                                                    <td>Total:</td>
-                                                    <td id="total">{{total}}</td>
+                                                      
+                                                    <td id="total">{{totalAftercoupon total user.couponDetails.Maxoffer}}     </td>
+                                                 
                                                 </tr>
-                                                  {{/if}}
+                                                {{else}}
+                                                
+                                                  <tr class="summary-subtotal" id="couponOffer" style="display: none;">
+                                                    <td>Offer percentage</td>
+                                                    <td class="summary-subtotal" id="couponOfferSub"  style=""></td>
+                                                </tr>
+                                                <tr class="summary-subtotal" id="Maxoffer" style="display: none;">
+                                                   <td>Offer Price</td>
+                                                    <td  class="summary-subtotal" id="MaxofferSub" ></td>
+                                                </tr>
+                                                <tr class="summary-total" >
+                                                    <td>Total:</td>
+                                                      
+                                                    <td id="total"></td>
+                                                 
+                                                </tr>
+                                                {{/if}}
+                                             
                                             </tbody>
 
                                         </table><!-- End .table table-summary -->
 
                                         <div class="accordion-summary" id="accordion-payment">
-
-
-                                            <div class="card">
-                                                <div class="card-header" id="heading-1">
-                                                    <h2 class="card-title">
-                                                        
-                                                    </h2>
-                                                </div><!-- End .card-header -->
-                                                <div id="collapse-1" class="collapse show" aria-labelledby="heading-1"
-                                                    data-parent="#accordion-payment">
-
-                                                </div><!-- End .collapse -->
-                                            </div><!-- End .card -->
-
-                                            <div class="card">
-                                                <div class="card-header" id="heading-2">
-                                                    <h2 class="card-title">
-                                                        
-                                                    </h2>
-                                                </div><!-- End .card-header -->
-                                                <div id="collapse-2" class="collapse" aria-labelledby="heading-2"
-                                                    data-parent="#accordion-payment">
-
-                                                </div><!-- End .collapse -->
-                                            </div><!-- End .card -->
-
-                                            <div class="card">
+                                                <div class="card">
                                                 <div class="card-header" id="heading-3">
                                                     <h2 class="card-title">
                                                         <label for="">
@@ -368,26 +360,15 @@
                                                               <br><br>
                                                             <label for=""><input type="radio" name="paymentmethod" value="razorpay">  Razorpay</label>
                                                               <br><br>
-                                                            <label for=""><input type="radio" name="paymentmethod" value="paypal" > Paypal</label>
-                                                            
-                                                             
-                                                    </h2>
+                                                           <label for=""><input type="radio" name="paymentmethod" value="paypal" > Paypal</label>
+                                                
+                                                         </h2>
                                                 </div><!-- End .card-header -->
                                                 <div id="collapse-3" class="collapse" aria-labelledby="heading-3"
                                                     data-parent="#accordion-payment">
-
                                                 </div><!-- End .collapse -->
                                             </div><!-- End .card -->
-
-
-
-
-
-                                        </div><!-- End .accordion -->
-
-
-
-
+                                      </div><!-- End .accordion -->
                                         <!-- Button trigger modal -->
                                         <button class="btn btn-primary" data-toggle="modal"
                                             data-target="#exampleModalCenter"  onclick="">
@@ -402,89 +383,7 @@
             </div><!-- End .page-content -->
         </main><!-- End .main -->
 
-        <footer class="footer">
-            <div class="footer-middle">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="widget widget-about">
-                                <img src="/product-image/logomh1.jpg" class="footer-logo" alt="Footer Logo" width="50"
-                                    height="50"> 
-                                    
-                                <p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate
-                                    magna eros eu erat. </p>
-
-                                <div class="social-icons">
-                                    <a href="#" class="social-icon" target="_blank" title="Facebook"><i
-                                            class="icon-facebook-f"></i></a>
-                                    <a href="#" class="social-icon" target="_blank" title="Twitter"><i
-                                            class="icon-twitter"></i></a>
-                                    <a href="#" class="social-icon" target="_blank" title="Instagram"><i
-                                            class="icon-instagram"></i></a>
-                                    <a href="#" class="social-icon" target="_blank" title="Youtube"><i
-                                            class="icon-youtube"></i></a>
-                                    <a href="#" class="social-icon" target="_blank" title="Pinterest"><i
-                                            class="icon-pinterest"></i></a>
-                                </div><!-- End .soial-icons -->
-                            </div><!-- End .widget about-widget -->
-                        </div><!-- End .col-sm-6 col-lg-3 -->
-
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="widget">
-                                <h4 class="widget-title">Useful Links</h4><!-- End .widget-title -->
-
-                                <ul class="widget-list">
-                                    <li><a href="about.html">About Molla</a></li>
-                                    <li><a href="#">How to shop on Molla</a></li>
-                                    <li><a href="#">FAQ</a></li>
-                                    <li><a href="contact.html">Contact us</a></li>
-                                    <li><a href="login.html">Log in</a></li>
-                                </ul><!-- End .widget-list -->
-                            </div><!-- End .widget -->
-                        </div><!-- End .col-sm-6 col-lg-3 -->
-
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="widget">
-                                <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
-
-                                <ul class="widget-list">
-                                    <li><a href="#">Payment Methods</a></li>
-                                    <li><a href="#">Money-back guarantee!</a></li>
-                                    <li><a href="#">Returns</a></li>
-                                    <li><a href="#">Shipping</a></li>
-                                    <li><a href="#">Terms and conditions</a></li>
-                                    <li><a href="#">Privacy Policy</a></li>
-                                </ul><!-- End .widget-list -->
-                            </div><!-- End .widget -->
-                        </div><!-- End .col-sm-6 col-lg-3 -->
-
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="widget">
-                                <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
-
-                                <ul class="widget-list">
-                                    <li><a href="#">Sign In</a></li>
-                                    <li><a href="cart.html">View Cart</a></li>
-                                    <li><a href="#">My Wishlist</a></li>
-                                    <li><a href="#">Track My Order</a></li>
-                                    <li><a href="#">Help</a></li>
-                                </ul><!-- End .widget-list -->
-                            </div><!-- End .widget -->
-                        </div><!-- End .col-sm-6 col-lg-3 -->
-                    </div><!-- End .row -->
-                </div><!-- End .container -->
-            </div><!-- End .footer-middle -->
-
-            <div class="footer-bottom">
-                <div class="container">
-                    <p class="footer-copyright">Copyright © 2019 Molla Store. All Rights Reserved.</p>
-                    <!-- End .footer-copyright -->
-                    <figure class="footer-payments">
-                        <img src="assets/images/payments.png" alt="Payment methods" width="272" height="20">
-                    </figure><!-- End .footer-payments -->
-                </div><!-- End .container -->
-            </div><!-- End .footer-bottom -->
-        </footer><!-- End .footer -->
+        
     </div><!-- End .page-wrapper -->
     <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
 
@@ -492,31 +391,30 @@
     <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
 
 
-
+ <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> 
+   <script>
+    function removeCoupon(couponId){
+       
+        
+     $.ajax({
+        url:'/removeCoupon',
+        
+        method:'post',
+        success:(response)=>{
+             swal({
+          title:("Coupon removed successfully"),
+     
+        icon: "success",
+      button: "Ok"}).then(()=>{
+                location.reload()
+             })
+        }
+     })
+}
+</script>
 
     <!-- Plugins JS File -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/jquery.hoverIntent.min.js"></script>
-    <script src="assets/js/jquery.waypoints.min.js"></script>
-    <script src="assets/js/superfish.min.js"></script>
-    <script src="assets/js/owl.carousel.min.js"></script>
-    <!-- Main JS File -->
-    <script src="assets/js/main.js"></script>
-
-
-
-    <script src="/assets2/vendor/apexcharts/apexcharts.min.js"></script>
-    <script src="/assets2/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="/assets2/vendor/chart.js/chart.min.js"></script>
-    <script src="/assets2/vendor/echarts/echarts.min.js"></script>
-    <script src="/assets2/vendor/quill/quill.min.js"></script>
-    <script src="/assets2/vendor/simple-datatables/simple-datatables.js"></script>
-    <script src="/assets2/vendor/tinymce/tinymce.min.js"></script>
-    <script src="/assets2/vendor/php-email-form/validate.js"></script>
-
-    <!-- Template Main JS File -->
-    <script src="/assets2/js/main.js"></script>
+    
 
 
 </body>

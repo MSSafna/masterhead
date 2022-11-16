@@ -49,6 +49,7 @@
                     <li><a href="/logout">logout</a></li>
                     {{else}}
                     <li><a href="/login">Sign in / Sign up</a></li>
+       
                     {{/if}}
 
                     </li>
@@ -95,15 +96,6 @@
                 </section>
             </div><!-- End .header-center -->
 
-
-
-
-
-
-
-
-
-
             <div class="header-right">
                 <div class="dropdown compare-dropdown">
                     <a href="/profile">
@@ -122,11 +114,13 @@
                 </div><!-- End .compare-dropdown -->
 
                 <div class="wishlist ">
+                  
                     <a href="/wishlistProducts" title="Wishlist">
                         <div class="icon">
                             <i class="icon-heart-o"></i>
                             {{#if wishCount}}
-                            <span class="wishlist-count badge">{{this.wishCount}}</span>
+                           
+                            <span class="wishlist-count badge">{{wishCount}}</span>
                             {{/if}}
                         </div>
                         <p>Wishlist</p>
@@ -136,14 +130,16 @@
                 <div class="dropdown cart-dropdown">
                     <a href="/cart" class="dropdown-toggle">
                         <div class="icon">
+                            
                             <i class="icon-shopping-cart"></i>
-                            {{#if Count}}
-                            <span class="cart-count">{{this.Count}}</span>
-                            {{/if}}
+                            
+                              {{#if Count}}
+                             <span class="cart-count" id="cartCount">{{Count}}</span>
+                             {{/if}}
+                          
                         </div>
                         <p>Cart</p>
                     </a>
-
 
                 </div><!-- End .cart-dropdown -->
             </div><!-- End .header-right -->
@@ -268,6 +264,10 @@
         </div><!-- End .social-icons -->
     </div><!-- End .mobile-menu-wrapper -->
 </div><!-- End .mobile-menu-container -->
+
+
+
+{{!-- footer --}}
 
 
 <script>

@@ -62,12 +62,14 @@ module.exports = {
       },
       {
         $project: {
+          wishList:1,
+          img:1,
           name: 1,
           price: 1,
           discription: 1,
           originalPrice:1,
           cartPresent:1,
-          image: { $arrayElemAt: ["$img", 0] },
+          image:1 ,
           brand: { $arrayElemAt: ["$brandName", 0] },
           stock: 1,
           status: 1
@@ -78,12 +80,52 @@ module.exports = {
       }
       ]).toArray()
 
-
+       console.log(datas);
       resolve(datas)
     })
 
   },
 
+
+  gethomeProducts:()=>{
+    return new Promise(async (resolve, reject) => {
+
+      let products = await db.get().collection(collection.PRODUCT_COLLECTION).aggregate([
+        
+        {
+
+        $lookup: {
+          from: collection.CATEGORY_COLLECTION,
+          localField: "brand",
+          foreignField: "_id",
+          as: "brandName"
+
+        },
+
+      },
+      {
+        $project: {
+          name: 1,
+          price: 1,
+          discription: 1,
+          originalPrice:1,
+          cartPresent:1,
+          image: { $arrayElemAt: ["$img", 0] },
+          brand: { $arrayElemAt: ["$brandName", 0] },
+          stock: 1,
+          status: 1
+
+        }
+      },{
+        $sort:{_id:1}
+      },
+      ]).toArray()
+
+
+      resolve(products)
+    })
+   
+  },
 
 
   getadminAllProducts: () => {
@@ -155,18 +197,20 @@ module.exports = {
         },
         {
           $project: {
+            originalPrice:1,
             name: 1,
             price: 1,
             discription: 1,
             stock: 1,
-            image: { $arrayElemAt: ["$img", 0] },
+            img:1,
+            
             brand: { $arrayElemAt: ["$brand", 0] },
           }
 
         }
 
       ]).toArray()
-
+          console.log(result);
       resolve(result[0])
 
     })
@@ -175,10 +219,7 @@ module.exports = {
 
 
   editProduct: ((datas) => {
-
-   console.log('datas');
-   console.log(datas);
-   console.log(datas.proId);
+    
     datas.brand = ObjectId(datas.brand)
     datas.price = parseInt(datas.price);
     datas.stock = parseInt(datas.stock)
@@ -432,7 +473,6 @@ module.exports = {
 
 
   yearlyReport: () => {
-
     return new Promise(async (resolve, reject) => {
       let result = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
         {
@@ -470,7 +510,7 @@ module.exports = {
       db.get().collection(collection.ORDER_COLLECTION).aggregate([
         {
           $match: {
-            'AdminStatus': { $nin: ['order cancelled'] }
+            'PaymentStatus': { $nin: ['Pending'] }
           }
         },
         {
@@ -505,7 +545,7 @@ module.exports = {
       db.get().collection(collection.ORDER_COLLECTION).aggregate([
         {
           $match: {
-            'AdminStatus': { $nin: ['order cancelled'] }
+            'PaymentStatus': { $nin: ['Pending'] }
           }
         },
         {
@@ -515,7 +555,9 @@ module.exports = {
             count: { $sum: 1 },
           }
         },
-
+         {
+          $sort:{date:-1}
+         }
 
       ]).toArray().then((weekReport) => {
         resolve(weekReport)
@@ -539,8 +581,10 @@ module.exports = {
             count: { $sum: 1 },
           }
         },
-
-
+        {
+          $sort:{date:-1}
+         }
+   
       ]).toArray().then((weekReport) => {
 
         console.log(weekReport);
@@ -579,7 +623,7 @@ module.exports = {
 
 
       ]).toArray().then((weekReport) => {
-        console.log(weekReport);
+        
         resolve(weekReport)
 
 
@@ -608,8 +652,12 @@ module.exports = {
             _id: "",
             MonthlyTotalAmount: { $sum: "$MonthlyTotalSaleAmount" }
           }
+        },
+       {
+        $sort:{
+          month:-1
         }
-
+       }
 
       ]).toArray().then((weekReport) => {
         resolve(weekReport)
@@ -640,7 +688,8 @@ module.exports = {
             _id: "",
             yearlyTotalAmount: { $sum: "$yearlyTotalSaleAmount" }
           }
-        }
+        },
+        {$sort:{year:-1}}
 
 
       ]).toArray().then((weekReport) => {
@@ -653,12 +702,7 @@ module.exports = {
   },
 
 
-  // getReturnProducts: () => {
-  //   return new Promise((resolve,reject)=>{
-  //     db.get().collection(collection.user).
-  //   })
-  // },
-
+ 
 
   OfferDisplay: () => {
     return new Promise((resolve, reject) => {
@@ -814,72 +858,93 @@ module.exports = {
 
 
   getReturnProducts:()=>{
-    return new Promise((resolve,reject)=>{
-      db.get().collection(collection.RETURN_COLLECTION).find().toArray().then((response)=>{
-        resolve(response)
-      })
+    return new Promise(async(resolve,reject)=>{
+      let returnDetails=await db.get().collection(collection.RETURN_COLLECTION).find().toArray()
+        console.log(returnDetails);
+        resolve(returnDetails)
+      
     })
   },
 
 
-  getReturnProductDetails:(returnId)=>{
+  getReturnProductDetails:({orderId,productId})=>{
+   
     return new Promise((resolve,reject)=>{
       db.get().collection(collection.RETURN_COLLECTION).aggregate([
         {
-         $match:{_id:ObjectId(returnId)}
+         $match:{orderId:ObjectId(orderId)}
        
       },
-      {
-        $unwind:'$prodetails'
-      },
-      {
-        $project:{
-          
-          proQty:'$prodetails.quantity',
-          proId:'$prodetails.items',
-          reason:1,
-           date:1,
-           total:1
-        }
-      },
-      {
-        $lookup:{
-          from:collection.PRODUCT_COLLECTION,
-          localField:'proId',
-          foreignField:'_id',
-          as:'proDetails'
-        }
-      },
-      {
-        $project:{
-          _id:0,
-          orderId:'$_id',
+        {$lookup:{
 
-          proQty:1,
-          proId:'$prodetails.items',
-          reason:1,
-           date:1,
-           total:1,
-           proDetails:1,
+          from:collection.ORDER_COLLECTION,
+          localField:'orderId',
+          foreignField:'_id',
+          as:'orderDetails'
         }
       },
-      {
-        $group: {
-            _id:'$orderId', productList: { $push: {proDetails: '$proDetails', proQty: '$proQty', total: '$total', date: '$date', returnReason: '$reason'} }
-        }
-    },
-      {
-        $lookup:{
-          from:collection.ORDER_COLLECTION,
-          localField:'_id',
-          foreignField:'_id',
-        as:'orderDetails'
-        }
-      },{
-        $unwind:'$orderDetails'
-      }
+       {$lookup:{
+         from:collection.PRODUCT_COLLECTION,
+         localField:'productId',
+        foreignField:'_id',
+        as:'productDetails'
+       }}
+      // {
+      //   $unwind:'orderDetails'
+      // }
+    //   {
+    //     $match:{'prodetails.items':ObjectId(productId)}
+    // },
+
+    //   {
+    //     $project:{
+          
+    //       proQty:'$prodetails.quantity',
+    //       proId:'$prodetails.items',
+    //       returnReason:'$prodetails.'
+    //       reason:1,
+    //        date:1,
+    //        total:1
+    //     }
+    //   },
+    //   {
+    //     $lookup:{
+    //       from:collection.PRODUCT_COLLECTION,
+    //       localField:'proId',
+    //       foreignField:'_id',
+    //       as:'proDetails'
+    //     }
+    //   },
+    //   {
+    //     $project:{
+    //       _id:0,
+    //       orderId:'$_id',
+
+    //       proQty:1,
+    //       proId:'$prodetails.items',
+    //       reason:1,
+    //        date:1,
+    //        total:1,
+    //        proDetails:1,
+    //     }
+    //   },
+    //   {
+    //     $group: {
+    //         _id:'$orderId', productList: { $push: {proDetails: '$proDetails', proQty: '$proQty', total: '$total', date: '$date', returnReason: '$reason'} }
+    //     }
+    // },
+    //   {
+    //     $lookup:{
+    //       from:collection.ORDER_COLLECTION,
+    //       localField:'_id',
+    //       foreignField:'_id',
+    //     as:'orderDetails'
+    //     }
+    //   },{
+    //     $unwind:'$orderDetails'
+    //   }
     ]).toArray().then((result)=>{
-      
+       console.log(result);
       resolve(result)
     })
     })
@@ -887,20 +952,20 @@ module.exports = {
 
 
 
-  confirmReturnProduct:(details)=>{
+  confirmReturnProduct:({orderId,productId})=>{
    
     return new Promise((resolve,reject)=>{
-      db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:ObjectId(details.order)},{
+      db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:ObjectId(orderId),'prodetails.items':ObjectId(productId)},{
         $set:{
-          AdminStatus:'Return confirmed'
+          'prodetails.$.productstatus':'Return confirmed'
         }
       }).then((response)=>{
-        db.get().collection(collection.RETURN_COLLECTION).updateOne({_id:ObjectId(details.order)},{
+        db.get().collection(collection.RETURN_COLLECTION).updateOne({orderId:ObjectId(orderId)},{
           $set:{
-            AdminStatus:'Return confirmed'
+            productStatus:'Return confirmed'
           }
-        }).then((response)=>{
-          resolve(response)
+        })
+       resolve(response)
 
         //   db.get().collection(collection.ORDER_COLLECTION).findOne({_id:ObjectId(details.order)}).then((response)=>{
             
@@ -915,7 +980,7 @@ module.exports = {
         //     }
         //   }) 
           
-         })
+     
         
        
       })
@@ -952,6 +1017,26 @@ module.exports = {
       resolve()
       
       })
+    })
+  },
+
+  PaymentMethodTotal:()=>{
+    
+    return new Promise (async(resolve,reject)=>{
+     
+    let result=await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+      {
+      $match:{
+        PaymentStatus:{$eq:'Successful'}
+      }
+    },{
+      $group:{
+        _id:'$paymentMethod',
+        totalAmount: { $sum: "$total" },
+      }
+    }
+  ]) .toArray()
+    resolve(result)
     })
   }
 }

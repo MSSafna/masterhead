@@ -35,8 +35,10 @@ const getAdminLogin = (req, res) => {
             productHelper.monthlyReport().then((monthlyreport) => {
               productHelper.dailyReport().then((dailyreport) => {
                 productHelper.yearlyReport().then((yearlyreport) => {
-                  res.render('admin/admin-dashboard', { adminHeader: true, monthlyreport, dailyreport, yearlyreport, customerCount, totalSales, proNumber, count })
+                  productHelper.PaymentMethodTotal().then((paymentMethodTotal)=>{
+                  res.render('admin/admin-dashboard', { adminHeader: true, monthlyreport, dailyreport, yearlyreport, customerCount, totalSales, proNumber, count,paymentMethodTotal })
                 })
+              })
               })
             })
           })
@@ -111,7 +113,6 @@ const editPage = (req, res) => {
     userHelper.returnCount().then((count) => {
       productHelper.geteditProduct(req.params.id).then((datas) => {
         productHelper.getBrand().then((response) => {
-          console.log(datas);
           res.render('admin/edit-products', { datas, adminHeader: true, response, count })
         })
       })
@@ -123,6 +124,7 @@ const editPage = (req, res) => {
 
 //   ............................................posteditpage.....................................//
 const postEditPage = (req, res) => {
+ 
   const files = req.files
   const file = files.map((file) => {
     return file
@@ -234,7 +236,10 @@ const dashboard = (req, res) => {
             productHelper.monthlyReport().then((monthlyreport) => {
               productHelper.dailyReport().then((dailyreport) => {
                 productHelper.yearlyReport().then((yearlyreport) => {
-                  res.render('admin/admin-dashboard', { adminHeader: true, count, customerCount, totalSales, proNumber, monthlyreport, dailyreport, yearlyreport })
+                  productHelper.PaymentMethodTotal().then((paymentMethodTotal)=>{
+                    res.render('admin/admin-dashboard', { adminHeader: true, count, customerCount, totalSales, proNumber, monthlyreport, dailyreport, yearlyreport,paymentMethodTotal })
+                  })
+                  
                 })
               })
             })
@@ -264,14 +269,18 @@ const orderDetils = (req, res) => {
 
 //   ..........................................................orderMoreDetails.......................//
 const more = async (req, res) => {
-  console.log(req.params.id)
   let details = await userHelper.getMoreDetails(req.params.id)
   let address = await userHelper.orderAddress(req.params.id)
+  console.log(details);
+  console.log(details[0].orderDetails.prodetails);
+  console.log(details[0].productList);
+  
   res.render('admin/order-summary', { adminHeader: true, details, address })
 }
 
 //................................................changeStatus.......................................//
 const changeStatus = async (req, res) => {
+  console.log(req.body);
   let result = await userHelper.changeStatus(req.body)
   if (req.body.status === 'Return confirmed') {
     userHelper.stockCheck(req.body.orderId).then((result) => {
@@ -423,15 +432,17 @@ const delteOffer = (req, res) => {
 
 // .....................................................returnProductDetails....................................//
 const returnProductDetails = (req, res) => {
-  productHelper.getReturnProductDetails(req.params.orderId).then((details) => {
+  console.log(req.query);
+  productHelper.getReturnProductDetails(req.query).then((details) => {
+    console.log(details);
     res.render('admin/return-product-details', { details, adminHeader: true })
   })
 }
 
 // ....................................................postreturproduct...............................//
 const postReturnProduct = (req, res) => {
-  productHelper.confirmReturnProduct(req.body).then((response) => {
-    res.json(response)
+  productHelper.confirmReturnProduct(req.query).then((response) => {
+    res.redirect('/admin/returnProducts')
   })
 }
 
@@ -443,6 +454,7 @@ const offerCategories = (req, res) => {
 // ................................................couponOfferMangaement.................................//
 const couponOfferManagement = (req, res) => {
   productHelper.getCouponDetail().then((response) => {
+    console.log(response);
     res.render('admin/coupon-offerManagement', { adminHeader: true, response, branderr })
     branderr = null
   })
@@ -466,17 +478,29 @@ const deleteCoupon = (req, res) => {
 }
 
 //.................................................................adminRegundApproved.......................//
-const adminRegundApproved = (req, res) => {
+const adminReFundApproved = (req, res) => {
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2');
+  console.log(req.body);
+
   userHelper.refundApproved(req.body).then((orderDetails) => {
-    userHelper.wallentAmountUpdate(orderDetails.total, orderDetails.userId, orderDetails._id).then(() => {
+   
       let orderId = ObjectId(req.body.orderId)
       userHelper.stockCheck(orderId).then((result) => {
         result.forEach(element => {
-          userHelper.stockIncCancel(element)
-          res.json('hai')
+          userHelper.stockIncCancel(element).then(()=>{
+            let response={
+              success:true
+            }
+
+            res.json(response)
+
+          })
+           
+
+         
         })
       })
-    })
+   
   })
 }
 
@@ -493,5 +517,5 @@ module.exports = {
   adminLoginPage, getAdminLogin, confirmAdmin, viewproducts, addProductPage, addProduct, editPage, postEditPage, blockProduct, unblockProduct, deleteProduct, viewUsers,
   getaddUser, postAddUser, blockUser, unblockUser, dashboard, logout, orderDetils, more, changeStatus, categories, addBrand, postAddBrand, deleteBrand, getEditBrand, postEditBrand,
   salesReport, stockUpdate, returnProducts, brandOfferManagement, offerSetting, delteOffer, returnProductDetails, postReturnProduct, offerCategories, couponOfferManagement, postCouponDetails,
-  deleteCoupon, adminRegundApproved
+  deleteCoupon, adminReFundApproved 
 }

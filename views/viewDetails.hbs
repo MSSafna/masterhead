@@ -1,0 +1,128 @@
+
+<section>
+    <div class="page-wrapper">
+
+
+        <main class="main">
+            <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+                <div class="container">
+                    <h1 class="page-title">Order Details</span></h1>
+                </div><!-- End .container -->
+            </div><!-- End .page-header -->
+
+
+            <div class="page-content">
+                <div class="container">
+                   
+                    {{#each orderDetails}}
+                     
+                    <p></p>
+                    <table class="table table-wishlist table-mobile">
+                        <thead>
+                            <tr>
+                                <th><strong>SI.no</strong></th>
+                                <th><strong>Product</strong></th>
+                                <th class="col-2"><strong>Name</strong></th>
+                                <th><strong>Quantity</strong></th>
+                                <th><strong>Product status</strong></th>
+                   
+                                <th><strong>Price</strong></th>
+                                
+                                <th class="col-2 pl-5 ml-5"><strong>  Options</strong></th>
+
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+
+                                {{#each this.productList}}
+                               
+                                <td class="font-weight-normal">{{indexing @index}}</td>
+                                <td><img src="/images/product/{{this.prodetails.img.[0]}}" alt=""
+                                        style="width:50px;height:50px;"></td>
+                                <td class="font-weight-normal">{{this.prodetails.name}}</td>
+                                <td class="font-weight-normal ">{{this.orderProducts.quantity}}</td>
+
+                                {{#Productstatus this.orderProducts.productstatus}}
+                                <td class="font-weight-normal" style="color: red;">{{../this.orderProducts.productstatus}}</td>
+                                {{else}}
+                                <td class="font-weight-normal" style="color:green;">{{../this.orderProducts.productstatus}}</td>
+                                {{/Productstatus}}
+                                <td class="font-weight-normal">{{this.productTotal}}</td>
+                               
+                                
+                             <td>
+                                {{#logicalOr this.orderProducts.productstatus }}
+                                <button type="button" class="btn btn-outline-danger ml-5" style="border-radius: 20px;"  onclick="cancelProduct('{{../this.prodetails._id}}','{{../this.orderId}}')">Cancel Product</button>
+                                    {{/logicalOr}}
+
+                                 {{#ifEquals this.orderProducts.productstatus 'Product cancelled'}}
+                                  <button type="button" class="btn btn-outline-danger ml-5 disabled" style="border-radius: 20px;" >Cancel Product</button>
+                                  {{/ifEquals}}
+                                
+                                 {{#ifEquals this.orderProducts.productstatus 'Delivered'}} 
+                                <a href= " /returnProductDetails/?proId={{../this.prodetails._id}}&orderId={{../this.orderId}}"  type="button" class="btn btn-outline-danger ml-5 " style="border-radius: 20px;" >Return Product</a>
+                                 {{/ifEquals}}
+
+                                {{#ifEquals this.orderProducts.productstatus 'Return request' }}
+                                <a href= " /cancelreturn/?proId={{../this.prodetails._id}}&orderId={{../this.orderId}}"  type="button" class="btn btn-outline-danger ml-5 " style="border-radius: 20px;" >Cancel return</a>
+                                 {{/ifEquals}}
+
+                                 {{#ifEquals this.orderProducts.productstatus 'Refunded' }}
+                                  <a href= ""  type="button" class="btn btn-outline-danger ml-5 disabled" style="border-radius: 20px;" >Cancel return</a>
+                                 {{/ifEquals}}
+
+                                 {{#trackOrderDisplay  this.orderProducts.productstatus}}
+                                <a href="" type="button" class="btn btn-outline-info ml-5 mt-3 disabled" style="border-radius: 20px;">Track Product</a>
+                                  {{else}}
+                                    <a href="/trackOrder/?proId={{../this.prodetails._id}}&orderId={{../this.orderId}}" type="button" class="btn btn-outline-info ml-5 mt-3" style="border-radius: 20px;">Track Product</a>
+                                    {{/trackOrderDisplay}}
+                                </td>
+                             </tr>
+                            {{/each }}
+
+                        </tbody>
+                        
+                    </div>
+                        
+                    </table>
+
+                    {{#if this.offerAmount.offerAmount}}
+                     {{#each couponDetails}}
+                    
+                        
+                         <p style="color: green; font-size:18px;">You saved ₹ {{this.Maxoffer}} on this purchase</p>
+                        <div style="margin-left:30% ;">
+                        <p class="font-weight-normal mt-2"
+                            style="float:right;font-size:20px;font-weight:500;margin-left: 30%;">
+                            <bold><span style="font-size:30px ;">TOTAL :&nbsp; ₹{{../this.offerAmount.offerAmount}}</span></bold>
+                        </p>
+                    </div>
+                   
+                    {{/each}}
+                    
+                    {{else}}
+                       <div style="margin-left:30% ;">
+                        <p class="font-weight-normal mt-2"
+                            style="float:right;font-size:30px;font-weight:500;margin-left: 30%;">
+                            <bold> TOTAL : ₹ {{this.total.total}} </bold>
+                        </p>
+                    </div>
+                    {{/if}}
+                    
+                    {{/each}}
+                </div><!-- End .container -->
+            </div><!-- End .page-content -->
+        </main><!-- End .main -->
+
+
+    </div><!-- End .page-wrapper -->
+ 
+
+
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+</section>

@@ -59,7 +59,7 @@
       <div class="row">
 
         <!-- Left side columns -->
-        <div class="col-lg-8">
+        <div class="col-lg-12">
           <div class="row">
 
             <!-- Sales Card -->
@@ -80,7 +80,7 @@
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Sales <span>| Today</span></h5>
+                  <h5 class="card-title">Sales <span>| Total</span></h5>
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -186,11 +186,11 @@
                   </ul>
                 </div>
 
-                <div class="card-body">
+                <div class="card-body ">
                   <h5 class="card-title">Reports <span>/Today</span></h5>
 
                   <!-- Line Chart -->
-                  <canvas id="line-chart"></canvas>
+                  <canvas id="line-chart" ></canvas>
 
                  
                     <script>
@@ -203,7 +203,7 @@
 
                             window.onload = () => {
                             dailyReport()
-                           
+                            paymentMethodTotal()
                             
                             };
 
@@ -231,7 +231,7 @@
                               };
                               
                               const config = {
-                                type: 'pie',
+                                type: 'line',
                                 data: data,
                                 options: {
                                   aspectRatio:3,
@@ -348,79 +348,56 @@
         </div><!-- End Left side columns -->
 
         <!-- Right side columns -->
-        <div class="col-lg-4">
+        <div class="col-lg-12">
 
         
 
           <!-- Budget Report -->
-          <div class="card">
-            <div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                  <h6>Filter</h6>
-                </li>
-
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-              </ul>
-            </div>
+          <div class="card" >
+            
 
             <div class="card-body pb-0">
-              <h5 class="card-title">Budget Report <span>| This Month</span></h5>
+              <h5 class="card-title">Payment Report <span>| This Month</span></h5>
 
-              <div id="budgetChart" style="min-height: 400px;" class="echart"></div>
+              
+               <canvas id="paymentMethodTotal"></canvas>
 
               <script>
-                document.addEventListener("DOMContentLoaded", () => {
-                  var budgetChart = echarts.init(document.querySelector("#budgetChart")).setOption({
-                    legend: {
-                      data: ['Allocated Budget', 'Actual Spending']
-                    },
-                    radar: {
-                      // shape: 'circle',
-                      indicator: [{
-                          name: 'Sales',
-                          max: 6500
-                        },
-                        {
-                          name: 'Administration',
-                          max: 16000
-                        },
-                        {
-                          name: 'Information Technology',
-                          max: 30000
-                        },
-                        {
-                          name: 'Customer Support',
-                          max: 38000
-                        },
-                        {
-                          name: 'Development',
-                          max: 52000
-                        },
-                        {
-                          name: 'Marketing',
-                          max: 25000
-                        }
-                      ]
-                    },
-                    series: [{
-                      name: 'Budget vs spending',
-                      type: 'radar',
-                      data: [{
-                          value: [4200, 3000, 20000, 35000, 50000, 18000],
-                          name: 'Allocated Budget'
-                        },
-                        {
-                          value: [5000, 14000, 28000, 26000, 42000, 21000],
-                          name: 'Actual Spending'
-                        }
-                      ]
-                    }]
-                  });
-                });
+
+                function paymentMethodTotal(){
+
+                             
+
+
+                            const data = {
+                                labels: [
+                                  {{#each paymentMethodTotal}}'{{_id}}',{{/each}}
+                                ],
+                                datasets: [{
+                                  label: 'Yearly Sales',
+                                  data: [{{#each paymentMethodTotal}}'{{totalAmount}}',{{/each}}],
+                                  backgroundColor: [
+                                    'rgb(103 119 239)',
+                                    'rgb(102 187 106)',
+                                    'rgb(54, 162, 235)',
+                                    'rgb(255, 99, 132)'
+                                  ]
+                                }]
+                              };
+                              
+                              const config = {
+                                type: 'pie',
+                                data: data,
+                                options: {
+                                  aspectRatio:3,
+                                  responsive:true
+                                }
+                              }; 
+                            
+                            myChart3 = new Chart(document.getElementById('paymentMethodTotal'), config)
+
+                                                  
+                            }
               </script>
 
             </div>
@@ -432,24 +409,6 @@
     </section>
 
   </main><!-- End #main -->
-
-  <!-- ======= Footer ======= -->
-  <footer id="footer" class="footer">
-    <div class="copyright">
-      &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
-    </div>
-    <div class="credits">
-      <!-- All the links in the footer should remain intact. -->
-      <!-- You can delete the links only if you purchased the pro version. -->
-      <!-- Licensing information: https://bootstrapmade.com/license/ -->
-      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-    </div>
-  </footer><!-- End Footer -->
-
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Vendor JS Files -->
 
 
 </body>

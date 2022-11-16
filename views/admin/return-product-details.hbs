@@ -7,7 +7,7 @@
 
 
 
-  {{#each details}} 
+{{#each details}} 
   
 
 
@@ -16,7 +16,7 @@
   <div class="card-body">
     <h5 class="card-title">Reason for return</h5>
     
-    <h6 class="card-text">{{this.productList.[0].returnReason}}</h6>
+    <h6 class="card-text">{{this.returnReason}}</h6>
     
   </div>
 </div>
@@ -25,21 +25,22 @@
 
 {{!-- Address---------------------- --}}
 
-
+{{#each this.orderDetails}}
 <div class="card ml-5" style="width: 18rem;">
   <div class="card-body">
     <h5 class="card-title">Return Address</h5>
-     <h6 class="card-text">{{this.orderDetails.Address.fullName}}</h6>
-    <h6 class="card-text">{{this.orderDetails.Address.address}}</h6>
-     <h6 class="card-text">{{this.orderDetails.Address.town}}</h6>
-      <h6 class="card-text">{{this.orderDetails.Address.state}}</h6>
-       <h6 class="card-text">{{this.orderDetails.Address.postcode}}</h6>
-        <h6 class="card-text">{{this.orderDetails.Address.phone}}</h6>
-         <h6 class="card-text">{{this.orderDetails.Address.email}}</h6>
+     <h6 class="card-text">{{this.Address.fullName}}</h6>
+    <h6 class="card-text">{{this.Address.address}}</h6>
+     <h6 class="card-text">{{this.Address.town}}</h6>
+      <h6 class="card-text">{{this.Address.state}}</h6>
+       <h6 class="card-text">{{this.Address.postcode}}</h6>
+        <h6 class="card-text">{{this.Address.phone}}</h6>
+         <h6 class="card-text">{{this.Address.email}}</h6>
           
     
   </div>
 </div>
+{{/each}}
 </div>
 
  {{!-- -----------------------------------------table --}}
@@ -57,41 +58,42 @@
     </thead>
     <tbody>
       
-       {{#each this.productList}}
+       {{#each productDetails}}
    
       <tr>
-        <td>{{@index}}</td>
-        <td data-label="S.No" class="col-3"><img src="/images/product/{{this.proDetails.[0].img.[0]}}" alt=""  style="width: 70px;height: 70px;"></td>
-        <td data-label="Name">{{this.proDetails.[0].name}}</td>
+        <td>{{indexing  @index }}</td>
+        <td data-label="S.No" class="col-3"><img src="/images/product/{{this.img.[0]}}" alt=""  style="width: 70px;height: 70px;"></td>
+        <td data-label="Name">{{this.name}}</td>
 
-        <td data-label="Name">{{this.proQty}}</td>
-          <td data-label="Name">{{this.date}}</td>
+        <td data-label="Name">{{../this.productQuantity}}</td>
+          <td data-label="Name">{{../this.orderDate}}</td>
         
 
         <td data-label="Marks%">
           
         </td>
-          {{/each}}    
-       
+           
+      
 
     </tbody>
  
   </table>
   
-  
-   <div style="float: right;margin-right: 100px;"><strong>TOTAL PRICE :</strong>&nbsp; <span  class="mr-5" style="color: green;font-weight:bold;font-size: larger;">{{this.orderDetails.total}}</span></div>
 
- 
-    {{#ifEquals this.orderDetails.AdminStatus 'Return confirmed'}}
+   <div style="float: right;margin-right: 100px;" ><strong>TOTAL PRICE :</strong>&nbsp; <span  class="mr-5" style="color: green;font-weight:bold;font-size: larger;" id="totalPrice">{{totalPrice  this.price ../this.productQuantity}}</span></div>
+    {{/each}} 
 
-   <button  id="returnConfirmed" type="buttom" class="btn btn-success disabled"  value="Return confirmed" onclick="ReturnConfirmed('{{this._id}}','Return confirmed')">
-      Return confirmed  
+       {{#ifEquals this.productStatus 'Return confirmed'}}
+         <p>{{../this._id}}</p>
+        <button   type="button" class="btn btn-success "  value="Refund"  onclick="refundAmount('{{../this.userId}}','{{../this.orderId}}','{{../this.productId}}','{{../this.orderDate}}','{{../this.productQuantity}}','{{../this._id}}')">
+        Refund  
+        </button>
+       {{else}}
+        
+        <a href="/admin/returnConfirmed?orderId={{../this.orderId}}&productId={{../this.productId}}"  id="returnConfirmed" type="buttom" class="btn btn-success "  value="Return confirmed" >
+         Return confirmed  
       </button>
-      {{else}}
-        <button  id="returnConfirmed" type="buttom" class="btn btn-success "  value="Return confirmed" onclick="ReturnConfirmed('{{../this._id}}','Return confirmed')">
-      Return confirmed  
-      </button>
-      {{/ifEquals}}
+     {{/ifEquals}}
    
 
 
@@ -117,26 +119,35 @@
 </main>
 
 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <script>
-  function ReturnConfirmed(orderId,value){
-    alert(orderId)
-    alert(value)
+  
+  function refundAmount(userId,orderId,productId,orderDate,ProductQty,returnId){
+    let totalPrice=document.getElementById('totalPrice').innerHTML
      $.ajax({
-        url: '/admin/returnConfirmed',
-
-        data: {
-            order: orderId,
-            AdminStatus:value
-        },
-        method: 'post',
-        
-        success: (response) => {
-            location.href = '/admin/returnProducts'
-
-        }
-    })
-    
-    
-
+    url:'/admin/adminRefundApproved',
+    method:'post',
+    data:{
+      userId:userId,
+      orderId:orderId,
+      productId:productId,
+      price:totalPrice,
+      orderDate:orderDate,
+      ProductQty:ProductQty,
+      returnId:returnId
+    },   
+    success:(response)=>{
+         swal({
+        title:"Successfully amount credited!",
+   
+      icon: "success",
+    button: "Ok",
+}).then(()=>{
+  location.href='/admin/returnProducts'
+})
+    }
+   })
   }
+  
 </script>

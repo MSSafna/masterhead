@@ -5,12 +5,18 @@ const mongocilent=require('mongodb').MongoClient
 
 module.exports.connect=function(done){
     
-    const url='mongodb+srv://safnams:safna123@cluster0.twf0sfo.mongodb.net/test'
+    // const url='mongodb+srv://safnams:safna123@cluster0.twf0sfo.mongodb.net/test'
+    const url='mongodb://127.0.0.1:27017'
     const dbname='shopping'
     mongocilent.connect(url,(err,data)=>{
-        if(err)return done(err)
-        state.db=data.db(dbname)
-        done()
+        if(err){
+            console.log(err);
+            return done(err)
+        }else{
+            state.db=data.db(dbname)
+            done()
+        }
+        
     })
 }
 module.exports.get=function(){

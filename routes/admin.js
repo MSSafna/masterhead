@@ -9,7 +9,7 @@ const { upload } = require('../public/javascripts/fileUpload');
 const {adminLoginPage, getAdminLogin,confirmAdmin,viewproducts,addProductPage,addProduct,editPage,postEditPage,blockProduct,unblockProduct,deleteProduct,viewUsers,
   getaddUser,postAddUser,blockUser,unblockUser,dashboard,logout,orderDetils,more,changeStatus,categories,addBrand,postAddBrand,deleteBrand,getEditBrand,postEditBrand,
   salesReport,stockUpdate,returnProducts,brandOfferManagement,offerSetting,delteOffer,returnProductDetails,postReturnProduct,offerCategories,couponOfferManagement,postCouponDetails,
-  deleteCoupon,adminRegundApproved}=require('../controller/adminController')
+  deleteCoupon,adminReFundApproved }=require('../controller/adminController')
 
 //......................................testingAdminLogin.............................//
 
@@ -112,10 +112,10 @@ router.post('/offerSetting',offerSetting)
 router.get('/deleteOffer:id',delteOffer)
 
 // .....................................................returnProductDetails..............................//
-router.get('/return-product-details/:orderId',returnProductDetails)
+router.get('/return-product-details',returnProductDetails)
 
 // ................................................postreturnConfirmed...............................//
-router.post('/returnConfirmed',postReturnProduct)
+router.get('/returnConfirmed',postReturnProduct)
 
 // .................................offerCategories.............................................//
 router.get('/offer-categories',offerCategories)
@@ -131,7 +131,7 @@ router.post('/couponDetails',postCouponDetails )
 router.get('/deleteCoupon:Id',deleteCoupon )
 
 //..................................................adminRegundApproved...............................//
-router.post('/adminRefundApproved',adminRegundApproved)
+router.post('/adminRefundApproved',adminReFundApproved )
 
 
 module.exports = router;

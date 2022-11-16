@@ -1,177 +1,179 @@
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HTML to PDF</title>
 <style>
-    .elem {
-        background-color: rgb(255, 255, 255);
-        color: rgb(0, 0, 0);
-    }
+  .gradient-custom {
+    /* fallback for old browsers */
+    background: rgb(255 255 255);
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to top left, rgb(255, 255, 255), rgba(246, 243, 255, 1));
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to top left, rgb(255, 255, 255), rgba(246, 243, 255, 1))
+  }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-</head>
-
-<body>
-<div class="elem">
- 
-    <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 padding">
-        <div class="card">
-        <div class="card-header p-4">
-        <a class="pt-2 d-inline-block"  data-abc="true">Master HEad</a>
- <h3 class=" text-center">Invoice</h3>
-        
-       
-       <strong>OrderId : <span>{{order.[0].orderDetails._id}}</span></strong>
-        <div class="card-body ">
-           <div class="row mb-4">
-              <div class="col-sm-8 ">
-
-              <h5 class="mb-1">Delivery Details:</h5>
-                        {{!-- <h4 class="text-dark mb-1">Mobile Mart</h4> --}}
-                        <strong>Name : {{order.[0].orderDetails.Address.fullName}}<br></strong> 
-                        <strong>Address : {{order.[0].orderDetails.Address.address}}</strong><br>
-                        <strong>Pin : {{order.[0].orderDetails.Address.postcode}}</strong><br>
-                        <strong>Mobile : {{order.[0].orderDetails.Address.phone}}</strong>
-
-
-                      
-               </div>
-        
-
-
-                  <div class="col-sm-4 float-right">
-
-                      
-                         <h5 class="mb-1">Order Details:</h5>
-                        {{!-- <h4 class="text-dark mb-1">Mobile Mart</h4> --}}
-                        <strong>Date: {{order.[0].orderDetails.date}}</strong><br>
-                        <strong>Payment: {{order.[0].orderDetails.paymentMethod}}</strong><br>
-                        <strong>Amount to Pay: ₹ {{order.[0].orderDetails.total}}</strong><br>
-               </div>
-
-               </div>
-
-        
-                   
-        </div>
-        {{#each order}}
-       
-        <div class="table-responsive-sm">
-
-         
-
-        <table class="table table-striped">
-        <thead>
-        <tr>
-        <th class="center">#</th>
-        <th>Item</th>
-       <th class="right">Image</th>
-        <th class="right">Price</th>
-        <th class="center">Qty</th>
-        {{!-- <th class="right">Total</th> --}}
-
-
-        </tr>
-
-        </thead>
-       {{#each this.productList}}
-        <tbody>
-
-
-        <tr>
-        <td class="center"></td>
-        
-        <td class="left strong">{{this.prodetails.name}}</td>
-        <td class="left strong"><img style="height: 30px;width: 30px;" src="/images/product/{{this.prodetails.img.[0]}}"></td>
-        <td class="right">₹ {{this.prodetails.price}}</td>
-        <td class="center">{{this.proQty}}</td>
-         {{!-- <td class="right">$15,000</td> --}}
-        </tr>
-      
-        </tbody>
-         {{/each}}
-        </table>
-
-           {{/each}}
-
-        </div>
-        
-        <div class="card-footer bg-white">
-        <p class="mb-0">Master HEad.com</p>
-        </div>
-        </div>
-        </div>
-
-</div>
-
 <div>
 
-  
-<div class="text-center">
-<button class="download btn btn-primary ">Download PDF</button>
-</div>
+  <main class="main">
+
+    
+    <section class="h-100 gradient-custom">
+      <div class="container py-5 h-100">
+        {{#each order}}
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div id="element" class="col-lg-12 col-xl-12">
+            <div class="card" style="border-radius: 10px;">
+              <div class="card-header px-4 py-5">
+                <h5 class="text-muted mb-0">Thanks for your Order, <span
+                    style="color: #a8729a;">{{this.orderDetails.Address.fullName}}</span>!</h5>
+                <button id="download" class="btn btn-success rounded-pill" style="float:right;">Download Bill</button>
+              </div>
+              <div>
+                <h1 class='d-flex justify-content-center align-items-center' style="color: #585858;">Order Summary</h1>
+              </div>
+              <div class="card-body p-4">
+                <div class="d-flex justify-content-center align-items-center mb-4">
+                  <p class="lead fw-normal mb-0" style="color: #585858;">Receipt</p>
+                </div>
+
+                <div class="card shadow-0 border mb-4">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center mb-2">Product
+                        Image
+                      </div>
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center mb-2">Product
+                        Name
+                      </div>
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center mb-2">Price
+                      </div>
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center mb-2">Quantity
+                      </div>
+
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center mb-2">Payment
+                        Type
+                      </div>
+                      {{!-- <div class="col-md-2 text-center d-flex justify-content-center align-items-center mb-2">
+                        Status</div> --}}
+                    </div>
+
+
+                    <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
+                    {{#each this.productList}}
+                    <div class="row mt-2">
+
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center ">
+                        <img src="/images/product/{{this.prodetails.img.[0]}}" class="img-fluid" width="80px"
+                          alt="Phone">
+                      </div>
+
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                        <p class="font-weight-normal mb-0">{{this.prodetails.name}}</p>
+                      </div>
+
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                        <p class="font-weight-normal mb-0 ">₹{{totalPrice this.this.prodetails.price this.proQty}}</p>
+                      </div>
+
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                        <p class="font-weight-normal mb-0 ">{{this.proQty}}</p>
+                      </div>
+
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                        <p class="font-weight-normal mb-0 small">{{../orderDetails.paymentMethod}}</p>
+                      </div>
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                        <p class="text-muted mb-0 small">{{../orderDetails.status}}</p>
+                      </div>
+                    </div>
+                    {{/each}}
+
+                  </div>
+
+                </div>
+
+
+                <div class="d-flex justify-content-between pt-1">
+                  <p class="fw-bold mb-0">Order Details</p>
+                  {{#if orderDetails.couponDetails}}
+                  <p class=" font-weight-normal mb-0"><span class="font-weight-bold "> Discount Price :  {{orderDetails.couponDetails.Maxoffer}} </span>
+                     </p>
+                  
+                  {{/if}}
+                </div>
+
+
+                <div class="d-flex justify-content-between">
+                  <p class="font-weight-normal  mb-0">Purchase Date : {{orderDetails.date}}</p>
+
+                </div>
+
+
+
+                <div>
+
+                  <p class="font-weight-normal"><span><strong> Delivery Address:</strong></span>
+                    <br>
+                    {{orderDetails.Address.fullName}},
+                    <br>
+                    {{orderDetails.Address.address}},&nbsp;
+
+                    {{orderDetails.Address.town}},&nbsp;
+                    <br>
+                    {{orderDetails.Address.postcode}},&nbsp;
+
+                    {{orderDetails.Address.email}},&nbsp;
+
+                    {{orderDetails.Address.phone}}
+
+                  </p>
+                   
+                </div>
+
+                </div>
+                 {{#if orderDetails.couponDetails}}
+                <div class="card-footer border-0 "
+                  style="background-color: #ffffff; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                
+                  <h5 class="d-flex align-items-center justify-content-end text-white  mb-0">
+                    <span class="h2 mb-0 ms-2" style="color: black;">Total : ₹{{orderDetails.offerAmount}}</span><br>
+                    
+                  </h5>
+                  
+                </div>
+               
+               {{else}}
+               <div class="card-footer border-0 "
+                  style="background-color: #ffffff; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                  <h5 class="d-flex align-items-center justify-content-end text-white  mb-0">
+                    <span class="h2 mb-0 ms-2" style="color: black;">Total : ₹{{orderDetails.total}}</span>
+                  </h5>
+                </div>
+                {{/if}}
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+       {{/each}}
+      </div>
+     
+      <a href="/order-history" type="button" class="btn btn-info" style="float: right;margin-right:300px ;margin-top: -30px;" >Back to orders</a>
+    </section>
+    
+   
+  </main>
 
 </div>
 <script>
-    let div = document.querySelector(".elem");
-    let btn = document.querySelector(".download");
-    btn.addEventListener('click', () => {
-        html2pdf().from(div).save()
-    })
+  let elem = document.querySelector('#element')
+  let btn = document.getElementById('download')
+  btn.addEventListener('click', async () => {
+    btn.style.display = 'none'
 
-
-
-
-    var table = document.getElementsByTagName('table')[0],
-        rows = table.getElementsByTagName('tr'),
-        text = 'textContent' in document ? 'textContent' : 'innerText';
-
-    for (var i = 1, len = rows.length; i < len; i++) {
-        rows[i].children[0][text] = i;
-    }
+    await html2pdf().from(elem).save()
+    btn.style.display = 'block'
+  })
 </script>
-
-
-<style>
-    body{
-
-background-color: #000;
-}
-
-.padding{
-
-padding: 2rem !important;
-} 
-
-.card {
-  margin-bottom: 30px;
-  border: none;
-  -webkit-box-shadow: 0px 1px 2px 1px rgba(154, 154, 204, 0.22);
-  -moz-box-shadow: 0px 1px 2px 1px rgba(154, 154, 204, 0.22);
-  box-shadow: 0px 1px 2px 1px rgba(154, 154, 204, 0.22);
-}
-
-.card-header {
-  background-color: #fff;
-  border-bottom: 1px solid #e6e6f2;
-}
-
-h3 {
-  font-size: 20px;
-}
-
-h5 {
-  font-size: 15px;
-  line-height: 26px;
-  color: #3d405c;
-  margin: 0px 0px 15px 0px;
-  font-family: 'Circular Std Medium';
-}
-
-.text-dark {
-  color: #3d405c !important;
-}
-</style>
-</body>
-
-
-</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.js"
+  integrity="sha512-vNrhFyg0jANLJzCuvgtlfTuPR21gf5Uq1uuSs/EcBfVOz6oAHmjqfyPoB5rc9iWGSnVE41iuQU4jmpXMyhBrsw=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
