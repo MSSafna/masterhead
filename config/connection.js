@@ -5,8 +5,7 @@ const mongocilent=require('mongodb').MongoClient
 
 module.exports.connect=function(done){
     
-    // const url='mongodb+srv://safnams:safna123@cluster0.twf0sfo.mongodb.net/test'
-    const url='mongodb://127.0.0.1:27017'
+    const url='mongodb+srv://safnams:safna123@cluster0.twf0sfo.mongodb.net/test'
     const dbname='shopping'
     mongocilent.connect(url,(err,data)=>{
         if(err){
