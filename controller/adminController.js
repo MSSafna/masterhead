@@ -72,27 +72,23 @@ const confirmAdmin = (req, res) => {
 }
 //...................................................view Products............................//
 const viewproducts = (req, res) => {
-  if (req.session.adminLogged) {
+  
     userHelper.returnCount().then((count) => {
       productHelper.getadminAllProducts().then((products) => {
         res.render('admin/admin-viewproducts', { adminHeader: true, products, count })
       })
     })
-  } else {
-    res.redirect('/admin')
-  }
+  
 }
 //   ............................................addProductsPage............................//
 const addProductPage = (req, res) => {
-  if (req.session.adminLogged) {
+  
     userHelper.returnCount().then((count) => {
       productHelper.getBrand().then((response) => {
         res.render('admin/add-products', { adminHeader: true, response, count })
       })
     })
-  } else {
-    res.redirect('/admin',)
-  }
+  
 }
 //....................................................addProduct..........................//
 const addProduct = (req, res) => {
@@ -113,7 +109,6 @@ const addProduct = (req, res) => {
 
 //.................................................editProductPage.........................//
 const editPage = (req, res) => {
-  if (req.session.adminLogged) {
     userHelper.returnCount().then((count) => {
       productHelper.geteditProduct(req.params.id).then((datas) => {
         productHelper.getBrand().then((response) => {
@@ -121,9 +116,6 @@ const editPage = (req, res) => {
         })
       })
     })
-  } else {
-    res.redirect('/admin')
-  }
 }
 
 //   ............................................posteditpage.....................................//
@@ -145,62 +137,41 @@ const postEditPage = (req, res) => {
 
 // ...............................................blockproduct.....................................//
 const blockProduct = (req, res) => {
-  if (req.session.adminLogged) {
     userHelper.returnCount().then((count) => { })
     productHelper.nonvisibility(req.params.id).then(() => {
       res.redirect('/admin/viewproducts')
     })
-  }
-  else {
-    res.redirect('/admin')
-  }
 }
 
 //   ................................................unblockproduct..................................//
 const unblockProduct = (req, res) => {
-  if (req.session.adminLogged) {
     productHelper.visibility(req.params.id).then(() => {
       res.redirect('/admin/viewproducts',)
     })
-  } else {
-    res.redirect('/admin')
-  }
 }
 
 //   .....................................................deleteproduct........................//
 const deleteProduct = (req, res) => {
-  if (req.session.adminLogged) {
     productHelper.deleteProduct(req.params.id).then(() => {
       res.redirect('/admin/viewproducts')
     })
-  } else {
-    res.redirect('/admin')
-  }
 }
 
 //.......................................................viewUsers................................//
 const viewUsers = (req, res) => {
-  if (req.session.adminLogged) {
     userHelper.returnCount().then((count) => {
       userHelper.getallUsers().then((users) => {
         res.render('admin/admin-viewusers', { adminHeader: true, users, count }
         )
       })
     })
-  } else {
-    res.redirect('/admin')
-  }
 }
 
 //   .........................................getadduserPage.........................................//
 const getaddUser = (req, res) => {
-  if (req.session.adminLogged) {
     res.render('admin/add-user')
-  } else {
-    res.redirect('/admin')
-  }
-}
-
+  } 
+  
 //   ................................................postAddUser........................................//
 const postAddUser = (req, res) => {
   userHelper.addUser(req.body).then(() => {
@@ -210,29 +181,20 @@ const postAddUser = (req, res) => {
 
 //   ....................................................blockUser....................................//
 const blockUser = (req, res) => {
-  if (req.session.adminLogged) {
     userHelper.blockUser(req.params.id).then(() => {
       res.redirect('/admin/viewusers')
     })
-  } else {
-    res.redirect('/admin')
-  }
-}
+  } 
 
 //   .......................................................unblockUser.................................//
 const unblockUser = (req, res) => {
-  if (req.session.adminLogged) {
     userHelper.unblockUser(req.params.id).then(() => {
       res.redirect('/admin/viewusers')
     })
-  } else {
-    res.redirect('/admin')
-  }
-}
+  } 
 
 //   .........................................................dashboard...................................//
 const dashboard = (req, res) => {
-  if (req.session.adminLogged) {
     userHelper.returnCount().then((count) => {
       userHelper.customerCount().then((customerCount) => {
         productHelper.getDailyTotalSale().then((totalSales) => {  
@@ -251,9 +213,6 @@ const dashboard = (req, res) => {
         })
       })
     })
-  } else {
-    res.redirect('/admin')
-  }
 }
 
 //   ...................................................................logout...............................//
@@ -275,16 +234,11 @@ const orderDetils = (req, res) => {
 const more = async (req, res) => {
   let details = await userHelper.getMoreDetails(req.params.id)
   let address = await userHelper.orderAddress(req.params.id)
-  console.log(details);
-  console.log(details[0].orderDetails.prodetails);
-  console.log(details[0].productList);
-  
   res.render('admin/order-summary', { adminHeader: true, details, address })
 }
 
 //................................................changeStatus.......................................//
 const changeStatus = async (req, res) => {
-  console.log(req.body);
   let result = await userHelper.changeStatus(req.body)
   if (req.body.status === 'Return confirmed') {
     userHelper.stockCheck(req.body.orderId).then((result) => {
@@ -483,11 +437,7 @@ const deleteCoupon = (req, res) => {
 
 //.................................................................adminRegundApproved.......................//
 const adminReFundApproved = (req, res) => {
-  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2');
-  console.log(req.body);
-
   userHelper.refundApproved(req.body).then((orderDetails) => {
-   
       let orderId = ObjectId(req.body.orderId)
       userHelper.stockCheck(orderId).then((result) => {
         result.forEach(element => {
@@ -495,16 +445,10 @@ const adminReFundApproved = (req, res) => {
             let response={
               success:true
             }
-
             res.json(response)
-
-          })
-           
-
-         
+          })   
         })
       })
-   
   })
 }
 

@@ -296,10 +296,11 @@
                     return
                 }
                 payload.forEach((item, index) => {
-                    console.log('===================', item.name)
+                    
+                    console.log(item)
                     if (index > 0) searchResutls.innerHTML += '<hr>'
-                    searchResutls.innerHTML += `<a  href="/product/${item._id}"><img src="/images/product/${item.img[0]}" style="height:25px;width:30px;display:inline;margin-left:50px"alt=""></a>`;
-                    searchResutls.innerHTML += `<a  href="/product/${item._id}" style="display:inline;color:black">${item.name}</a>`
+                    searchResutls.innerHTML += `<a  href="/zoomproducttesting/${item._id}"><img src="/images/product/${item.img[0]}" style="height:25px;width:30px;display:inline;margin-left:50px"alt=""></a>`;
+                    searchResutls.innerHTML += `<a  href="/zoomproducttesting/${item._id}" style="display:inline;color:black">${item.name}</a>`
                 })
                 return
             })

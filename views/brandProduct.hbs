@@ -30,7 +30,7 @@
                                             <figure class="product-media">
                                                 <span class="product-label label-new">New</span>
                                                 <a href="/zoomproducttesting/{{this._id}}">
-                                                    <img src="/images/product/{{this.image}}" alt="Product image"
+                                                    <img src="/images/product/{{this.img.[0]}}" alt="Product image"
                                                         class="product-image">
                                                 </a>
 
@@ -101,19 +101,12 @@
                                                 </div><!-- End .product-content -->
 
                                                 <div class="product-nav product-nav-thumbs">
+                                                    {{#each img}}
                                                     <a href="#" class="active">
-                                                        <img src="/images/product/{{this.image}}" 
+                                                        <img src="/images/product/{{this}}" 
                                                             alt="product desc">
                                                     </a>
-                                                    <a href="#">
-                                                        <img src= "/images/product/{{this.image}}" 
-                                                            alt="product desc">
-                                                    </a>
-
-                                                    <a href="#">
-                                                        <img src="/images/product/{{this.image}}" 
-                                                            alt="product desc">
-                                                    </a>
+                                                    {{/each}}
                                                 </div><!-- End .product-nav -->
                                             </div><!-- End .product-body -->
                                         </div><!-- End .col-lg-6 -->

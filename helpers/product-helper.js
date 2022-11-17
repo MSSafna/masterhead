@@ -408,13 +408,13 @@ module.exports = {
             name: 1,
             price: 1,
             discription: 1,
-            image: { $arrayElemAt: ["$img", 0] },
+            img: 1,
             brand: { $arrayElemAt: ["$brand", 0] },
             status: 1,
           }
         }
       ]).toArray()
-
+    
       resolve(result)
     })
   },

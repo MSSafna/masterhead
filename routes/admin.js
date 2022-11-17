@@ -12,10 +12,10 @@ const {adminLoginPage, getAdminLogin,confirmAdmin,viewproducts,addProductPage,ad
   deleteCoupon,adminReFundApproved }=require('../controller/adminController')
 
   const adminsessionHandler = (req, res, next) => {
-    if (req.session.user) {
+    if (req.session.adminLogged) {
       next()
     } else {
-      res.redirect('/login')
+      res.redirect('/admin')
     }
   }
 
@@ -30,116 +30,116 @@ router.get('/login',getAdminLogin)
 router.post('/login',confirmAdmin );
 
 //.............................................view Products.......................................//
-router.get('/viewproducts',viewproducts );
+router.get('/viewproducts',adminsessionHandler,viewproducts );
 
 //..........................................addProductsPage.............................................//
-router.get('/addproduct',addProductPage);
+router.get('/addproduct',adminsessionHandler,addProductPage);
 
 //............................................addProduct.......................................//
-router.post('/addproduct', upload.array('image'),addProduct );
+router.post('/addproduct',adminsessionHandler, upload.array('image'),addProduct );
 
 //............................................editProductPage............................//
-router.get('/edit-product/:id',editPage );
+router.get('/edit-product/:id',adminsessionHandler,editPage );
 
 //..............................................postedit............................//
-router.post('/editproduct', upload.array('image'),postEditPage)
+router.post('/editproduct',adminsessionHandler, upload.array('image'),postEditPage)
 
 // ...............................................blockproduct..............................//
-router.get('/block/:id',blockProduct)
+router.get('/block/:id',adminsessionHandler,blockProduct)
 
 //.................................................unblockproduct.................................//
-router.get('/unblock/:id',unblockProduct)
+router.get('/unblock/:id',adminsessionHandler,unblockProduct)
 
 //............................................deleteProduct...................................//
-router.get('/delete/:id',deleteProduct)
+router.get('/delete/:id',adminsessionHandler,deleteProduct)
 
 // ..............................................viewUsers................................//
-router.get('/viewusers',viewUsers)
+router.get('/viewusers',adminsessionHandler,viewUsers)
 
 // .....................................................adduserPage.................................//
-router.get('/adduser',getaddUser )
+router.get('/adduser',adminsessionHandler,getaddUser )
 
 // ....................................................postaddUser.................................//
-router.post('/adduser',postAddUser)
+router.post('/adduser',adminsessionHandler,postAddUser)
 
 // .......................................................bllockUser................................//
-router.get('/blockuser/:id',blockUser)
+router.get('/blockuser/:id',adminsessionHandler,blockUser)
 
 // .........................................................unblockUser.................................//
-router.get('/unblockuser/:id',unblockUser)
+router.get('/unblockuser/:id',adminsessionHandler,unblockUser)
 
 // .......................................................dashboard.....................................//
-router.get('/dashboard',dashboard)
+router.get('/dashboard',adminsessionHandler,dashboard)
 
 // ...............................................................logout...........................//
 router.get('/logout',logout)
 
 // .........................................................orderDetails.................................//
-router.get('/orders',orderDetils)
+router.get('/orders',adminsessionHandler,orderDetils)
 
 // ..........................................................orderMoreDetails..........................//
-router.get('/more/:id',more)
+router.get('/more/:id',adminsessionHandler,more)
 
 // .........................................................changeStatus.............................//
-router.post('/changeStatus',changeStatus)
+router.post('/changeStatus',adminsessionHandler,changeStatus)
 
 // .........................................................category.................................//
-router.get('/category',categories)
+router.get('/category',adminsessionHandler,categories)
 
 // ..............................................................getAddBrand............................//
-router.get('/addBrand',addBrand)
+router.get('/addBrand',adminsessionHandler,addBrand)
 
 // .......................................................postAddBrand...........................//
-router.post('/addBrand', upload.any('image'),postAddBrand)
+router.post('/addBrand',adminsessionHandler, upload.any('image'),postAddBrand)
 
 // ..............................................deletebrand.......................................//
-router.post('/deletebrand',deleteBrand)
+router.post('/deletebrand',adminsessionHandler,deleteBrand)
 
 // ............................................geteditBrand........................................//
-router.get('/edit/:Id',getEditBrand)
+router.get('/edit/:Id',adminsessionHandler,getEditBrand)
 
 // .............................................posteditBrand.....................................//
-router.post('/edit', upload.any('image'),postEditBrand)
+router.post('/edit',adminsessionHandler, upload.any('image'),postEditBrand)
 
 // .............................................salesReport...........................................//
-router.get('/salesReport',salesReport)
+router.get('/salesReport',adminsessionHandler,salesReport)
 
 // ................................................stockupdate...........................................//
-router.post('/stockupdate',stockUpdate)
+router.post('/stockupdate',adminsessionHandler,stockUpdate)
 
 // ......................................................returnProducts...................................//
-router.get('/returnProducts',returnProducts)
+router.get('/returnProducts',adminsessionHandler,returnProducts)
 
 // ........................................................brandOfferManagement................................//
-router.get('/brandofferManagement',brandOfferManagement)
+router.get('/brandofferManagement',adminsessionHandler,brandOfferManagement)
 
 // ..........................................................offerSetting......................................//
-router.post('/offerSetting',offerSetting)
+router.post('/offerSetting',adminsessionHandler,offerSetting)
 
 // ........................................................deleteOffer.....................................//
-router.get('/deleteOffer:id',delteOffer)
+router.get('/deleteOffer:id',adminsessionHandler,delteOffer)
 
 // .....................................................returnProductDetails..............................//
-router.get('/return-product-details',returnProductDetails)
+router.get('/return-product-details',adminsessionHandler,returnProductDetails)
 
 // ................................................postreturnConfirmed...............................//
-router.get('/returnConfirmed',postReturnProduct)
+router.get('/returnConfirmed',adminsessionHandler,postReturnProduct)
 
 // .................................offerCategories.............................................//
-router.get('/offer-categories',offerCategories)
+router.get('/offer-categories',adminsessionHandler,offerCategories)
 
 // ......................................couponOfferManagement....................................//
-router.get('/couponOfferManagement',couponOfferManagement)
+router.get('/couponOfferManagement',adminsessionHandler,couponOfferManagement)
 
 //........................................coupondetails...........................................//
-router.post('/couponDetails',postCouponDetails )
+router.post('/couponDetails',adminsessionHandler,postCouponDetails )
 
 // .................................deleteCoupon...............................................//
 
-router.get('/deleteCoupon:Id',deleteCoupon )
+router.get('/deleteCoupon:Id',adminsessionHandler,deleteCoupon )
 
 //..................................................adminRegundApproved...............................//
-router.post('/adminRefundApproved',adminReFundApproved )
+router.post('/adminRefundApproved',adminsessionHandler,adminReFundApproved )
 
 
 module.exports = router;

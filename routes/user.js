@@ -113,7 +113,7 @@ if(req.session.warning){
   if (req.session.userLogged) {
     res.redirect('/')
   } else {
-    res.render('login', { warning, warningmessage,userHeader:true })  
+    res.render('login', { warning, warningmessage})  
     warningmessage = false
     req.session.warning=false
   }
@@ -232,7 +232,7 @@ router.get('/signup', (req, res) => {
     emailExist=req.session.emailExist
      err=req.session.err
    }
-  res.render('signup', { emailExist, err,userHeader:true })
+  res.render('signup', { emailExist, err})
   emailExist = false
 });
 //.............................................................signup........................................//
@@ -655,9 +655,13 @@ router.post('/editAddress', (req, res) => {
   router.get('/brandProduct/:Id', (req, res) => {
   if(req.session.user){
     productHelper.getBrandProduct(req.params.Id).then((datas) => {
+      console.log(datas);
       req.session.brandProduct=datas
+      
         let brandProduct=req.session.brandProduct
       productHelper.getBrand().then((brands) => {
+       
+
         res.render('brandProduct', { brandProduct, userHeader: true, userLogged: true, brands })
       })
     })
