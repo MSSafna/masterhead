@@ -11,6 +11,14 @@ const {adminLoginPage, getAdminLogin,confirmAdmin,viewproducts,addProductPage,ad
   salesReport,stockUpdate,returnProducts,brandOfferManagement,offerSetting,delteOffer,returnProductDetails,postReturnProduct,offerCategories,couponOfferManagement,postCouponDetails,
   deleteCoupon,adminReFundApproved }=require('../controller/adminController')
 
+  const adminsessionHandler = (req, res, next) => {
+    if (req.session.user) {
+      next()
+    } else {
+      res.redirect('/login')
+    }
+  }
+
 //......................................testingAdminLogin.............................//
 
 router.get('/',adminLoginPage);

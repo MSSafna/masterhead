@@ -597,20 +597,19 @@ module.exports = {
 
 
 
-
+//..............................................................getDailyTotalSale.................................//
   getDailyTotalSale: () => {
     return new Promise((resolve, reject) => {
       db.get().collection(collection.ORDER_COLLECTION).aggregate([
         {
-          $match: {
-            'AdminStatus': { $nin: ['order cancelled'] }
+          $match: {  
+            'PaymentStatus': { $nin: ['Pending'] }
           }
         },
         {
           $group: {
             _id: '$orderYear',
             dailyTotalSaleAmount: { $sum: "$total" },
-
           }
         },
         {
@@ -619,26 +618,20 @@ module.exports = {
             dailyTotalAmount: { $sum: "$dailyTotalSaleAmount" }
           }
         }
-
-
-
-      ]).toArray().then((weekReport) => {
-        
+      ]).toArray().then((weekReport) => { 
         resolve(weekReport)
-
-
       })
 
     })
   },
 
-
+//................................................................getMonthlyTotalSale..........................//
   getMonthlyTotalSale: () => {
     return new Promise((resolve, reject) => {
       db.get().collection(collection.ORDER_COLLECTION).aggregate([
         {
           $match: {
-            'AdminStatus': { $nin: ['order cancelled'] }
+            'PaymentStatus': { $nin: ['Pending'] }
           }
         },
         {
@@ -658,22 +651,18 @@ module.exports = {
           month:-1
         }
        }
-
       ]).toArray().then((weekReport) => {
         resolve(weekReport)
-
       })
-
     })
   },
-
-
+//...................................................................getYearlyTotalSale............................//
   getYearlyTotalSale: () => {
     return new Promise((resolve, reject) => {
       db.get().collection(collection.ORDER_COLLECTION).aggregate([
         {
           $match: {
-            'AdminStatus': { $nin: ['order cancelled'] }
+            'PaymentStatus': { $nin: ['Pending'] }
           }
         },
         {
@@ -690,20 +679,12 @@ module.exports = {
           }
         },
         {$sort:{year:-1}}
-
-
       ]).toArray().then((weekReport) => {
-
         resolve(weekReport)
-
       })
-
     })
   },
-
-
- 
-
+  //.............................................................OfferDisplay..............................//
   OfferDisplay: () => {
     return new Promise((resolve, reject) => {
       db.get().collection(collection.CATEGORY_COLLECTION).find({
@@ -714,8 +695,7 @@ module.exports = {
       })
     })
   },
-
-
+//........................................................noOfferDisplay...................................//
   noOfferDisplay: () => {
     return new Promise((resolve, rejevt) => {
       db.get().collection(collection.CATEGORY_COLLECTION).find({
@@ -725,10 +705,8 @@ module.exports = {
       })
     })
   },
-
-
+//....................................................offerManagement........................................//
   offerManagement: (details) => {
-
     return new Promise((resolve, reject) => {
       db.get().collection(collection.PRODUCT_COLLECTION).aggregate([{
         $match: { brand: ObjectId(details.id) }
@@ -739,41 +717,31 @@ module.exports = {
           brand: 1,
           price: 1,
           image: 1
-
         }
       }
       ]).toArray().then((result) => {
-
         resolve(result)
       })
     })
   },
-
-
+//......................................................priceOfferCut.....................................//
   priceOfferCut: (proDetails, offerPercentage) => {
-
     let offerper = parseInt(offerPercentage)
-
     let offerPrice = (proDetails.price * offerper / 100)
     return new Promise((resolve, reject) => {
       db.get().collection(collection.PRODUCT_COLLECTION).updateOne({ _id: ObjectId(proDetails._id) }, {
         $set: {
-
           price: proDetails.price - offerPrice,
           offerPercentage: offerPercentage,
           originalPrice: proDetails.price
         }
       }).then((result) => {
-
         resolve()
       })
     })
   },
-
-
+//.........................................................orderUpdate....................................//
   orderUpdate: (details) => {
-
-
     return new Promise((resolve, reject) => {
       db.get().collection(collection.CATEGORY_COLLECTION).updateOne({ _id: ObjectId(details.id) }, {
         $set: {
@@ -781,23 +749,14 @@ module.exports = {
           offerPercentage: details.offerpercentge
         }
       }).then((response) => {
-
         resolve(response)
       })
     })
   },
-
-
-  
-
-
+//.................................................................deleteOffer..................................//
   deleteOffer: (brandId) => {
-    
     return new Promise((resolve, reject) => {
       db.get().collection(collection.PRODUCT_COLLECTION).find({brand:ObjectId(brandId)}).toArray().then((result) => {
-          
-
-
         db.get().collection(collection.CATEGORY_COLLECTION).updateOne({ _id: ObjectId(brandId)},
         {
           $unset: {
@@ -810,7 +769,6 @@ module.exports = {
               offerDisplay:false
             }
           }).then(()=>{
-           
             resolve(result)
           })
           
@@ -819,56 +777,37 @@ module.exports = {
       })
     })
   },
-
-
-
+//.....................................................offerDeleteProductUpdate...............................//
   offerDeleteProductUpdate: (details) => {
-    console.log(details);
    let offerpercentage = details.offerPercentage,
      price = details.price
-
    return new Promise((resolve, reject) => {
-
       db.get().collection(collection.PRODUCT_COLLECTION).updateOne({ _id: ObjectId(details._id) },
         {
           $unset: {
             offerPercentage: offerpercentage,
             price: price
           }
-
         }).then((result) => {
-
           db.get().collection(collection.PRODUCT_COLLECTION).updateOne({ _id: ObjectId(details._id) }, {
             $rename: {
               'originalPrice': 'price'
-
             }
           }).
-            then((result) => {
-             
-            
-                             
+            then((result) => {                
               })
-
           })
     })
-
-
   },
-
-
+//..........................................................getReturnProducts.............................//
   getReturnProducts:()=>{
     return new Promise(async(resolve,reject)=>{
       let returnDetails=await db.get().collection(collection.RETURN_COLLECTION).find().toArray()
-        console.log(returnDetails);
-        resolve(returnDetails)
-      
+        resolve(returnDetails)  
     })
   },
-
-
+//................................................getReturnProductDetails....................................//
   getReturnProductDetails:({orderId,productId})=>{
-   
     return new Promise((resolve,reject)=>{
       db.get().collection(collection.RETURN_COLLECTION).aggregate([
         {
@@ -889,71 +828,14 @@ module.exports = {
         foreignField:'_id',
         as:'productDetails'
        }}
-      // {
-      //   $unwind:'orderDetails'
-      // }
-    //   {
-    //     $match:{'prodetails.items':ObjectId(productId)}
-    // },
-
-    //   {
-    //     $project:{
-          
-    //       proQty:'$prodetails.quantity',
-    //       proId:'$prodetails.items',
-    //       returnReason:'$prodetails.'
-    //       reason:1,
-    //        date:1,
-    //        total:1
-    //     }
-    //   },
-    //   {
-    //     $lookup:{
-    //       from:collection.PRODUCT_COLLECTION,
-    //       localField:'proId',
-    //       foreignField:'_id',
-    //       as:'proDetails'
-    //     }
-    //   },
-    //   {
-    //     $project:{
-    //       _id:0,
-    //       orderId:'$_id',
-
-    //       proQty:1,
-    //       proId:'$prodetails.items',
-    //       reason:1,
-    //        date:1,
-    //        total:1,
-    //        proDetails:1,
-    //     }
-    //   },
-    //   {
-    //     $group: {
-    //         _id:'$orderId', productList: { $push: {proDetails: '$proDetails', proQty: '$proQty', total: '$total', date: '$date', returnReason: '$reason'} }
-    //     }
-    // },
-    //   {
-    //     $lookup:{
-    //       from:collection.ORDER_COLLECTION,
-    //       localField:'_id',
-    //       foreignField:'_id',
-    //     as:'orderDetails'
-    //     }
-    //   },{
-    //     $unwind:'$orderDetails'
-    //   }
     ]).toArray().then((result)=>{
        console.log(result);
       resolve(result)
     })
     })
   },
-
-
-
-  confirmReturnProduct:({orderId,productId})=>{
-   
+//.........................................................confirmReturnProduct.................................//
+  confirmReturnProduct:({orderId,productId})=>{ 
     return new Promise((resolve,reject)=>{
       db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:ObjectId(orderId),'prodetails.items':ObjectId(productId)},{
         $set:{
@@ -966,27 +848,10 @@ module.exports = {
           }
         })
        resolve(response)
-
-        //   db.get().collection(collection.ORDER_COLLECTION).findOne({_id:ObjectId(details.order)}).then((response)=>{
-            
-        //     if(response.paymentMethod=='cod'){
-        //      console.log(details.order);
-        //       db.get().collection(collection.RETURN_COLLECTION).deleteOne({_id:ObjectId(details.order)}).then((response)=>{
-        //          console.log(response);
-        //          resolve(response)
-        //       })
-        //     }else{
-        //       resolve(response)
-        //     }
-        //   }) 
-          
-     
-        
-       
       })
     })
   },
-
+//................................................................couponManagement.........................//
   couponManagement:(details)=>{
     console.log(details);
     return new Promise(async(resolve,reject)=>{
@@ -997,12 +862,10 @@ module.exports = {
       db.get().collection(collection.COUPON_COLLECTION).insertOne(details).then(()=>{
         resolve()
       })
-     }
-      
+     }  
     })
   },
-
-
+//................................................................getCouponDetail..................................//
   getCouponDetail:()=>{
     return new Promise((resolve,reject)=>{
       db.get().collection(collection.COUPON_COLLECTION).find().toArray().then((response)=>{
@@ -1010,20 +873,17 @@ module.exports = {
       })
     })
   },
-
+//.....................................................deleteCoupon.......................................//
   deleteCoupon:(couponId)=>{
     return new Promise((resolve,reject)=>{
       db.get().collection(collection.COUPON_COLLECTION).deleteOne({_id:ObjectId(couponId)}).then((response)=>{
-      resolve()
-      
+      resolve() 
       })
     })
   },
-
+//........................................................graphPaymentMethodTotal..................................//
   PaymentMethodTotal:()=>{
-    
-    return new Promise (async(resolve,reject)=>{
-     
+    return new Promise (async(resolve,reject)=>{  
     let result=await db.get().collection(collection.ORDER_COLLECTION).aggregate([
       {
       $match:{

@@ -16,6 +16,10 @@ let credentials = {
 let branderr
 let brandExist = false
 
+
+
+
+
 // ....................................adminLoginPage........................//
 const adminLoginPage = function (req, res, next) {
   if (req.session.adminLogged) {
@@ -30,7 +34,7 @@ const getAdminLogin = (req, res) => {
   if (req.session.adminLogged) {
     userHelper.returnCount().then((count) => {
       userHelper.customerCount().then((customerCount) => {
-        userHelper.salesTotal().then((totalSales) => {
+        productHelper.getDailyTotalSale().then((totalSales) => {
           userHelper.numOfProduct().then((proNumber) => {
             productHelper.monthlyReport().then((monthlyreport) => {
               productHelper.dailyReport().then((dailyreport) => {
@@ -231,7 +235,7 @@ const dashboard = (req, res) => {
   if (req.session.adminLogged) {
     userHelper.returnCount().then((count) => {
       userHelper.customerCount().then((customerCount) => {
-        userHelper.salesTotal().then((totalSales) => {
+        productHelper.getDailyTotalSale().then((totalSales) => {  
           userHelper.numOfProduct().then((proNumber) => {
             productHelper.monthlyReport().then((monthlyreport) => {
               productHelper.dailyReport().then((dailyreport) => {
