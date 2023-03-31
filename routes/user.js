@@ -660,8 +660,6 @@ router.post('/editAddress', (req, res) => {
       
         let brandProduct=req.session.brandProduct
       productHelper.getBrand().then((brands) => {
-       
-
         res.render('brandProduct', { brandProduct, userHeader: true, userLogged: true, brands })
       })
     })
@@ -670,7 +668,7 @@ router.post('/editAddress', (req, res) => {
       req.session.brandProduct=datas
       let brandProduct=req.session.brandProduct
       productHelper.getBrand().then((brands) => {
-        res.render('brandProduct', { brandProduct, userHeader: true, brands })
+         res.render('brandProduct', { brandProduct, userHeader: true, brands })
       })
     })
   }  

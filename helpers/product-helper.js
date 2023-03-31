@@ -322,12 +322,13 @@ module.exports = {
 
   getBrand: () => {
     return new Promise(async (resolve, reject) => {
-      let brands = await db.get().collection(collection.CATEGORY_COLLECTION).find().toArray()
-
+       let brands = await db.get().collection(collection.CATEGORY_COLLECTION).find().toArray()
+      
       resolve(brands)
 
     })
   },
+
 
   updateStock: (details) => {
     details.stock = parseInt(details.stock)
@@ -411,6 +412,7 @@ module.exports = {
             img: 1,
             brand: { $arrayElemAt: ["$brand", 0] },
             status: 1,
+            stock:1
           }
         }
       ]).toArray()
